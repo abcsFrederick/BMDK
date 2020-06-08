@@ -7,3 +7,8 @@ output: md_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# BMDK - Biomarker Discovery Kit
+
+```{r main code}
+# code goes here
+```
