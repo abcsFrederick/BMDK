@@ -1,5 +1,5 @@
 Package: BMDK
-Title: What The Package Does (one line, title case required)
+Title: Biomarker Discovery Kit
 Version: 0.1
 Authors@R: personList(person("Brian",       'Luke', email =  'lukebria@mail.nih.gov', role = c("aut", "cre")),
                       person("Randy",    'Johnson', email = 'johnsonra@mail.nih.gov', role =   "aut"),
