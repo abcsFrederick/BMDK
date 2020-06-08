@@ -1,0 +1,13 @@
+Package: BMDK
+Title: What The Package Does (one line, title case required)
+Version: 0.1
+Authors@R: personList(person("Brian",       'Luke', email =  'lukebria@mail.nih.gov', role = c("aut", "cre")),
+                      person("Randy",    'Johnson', email = 'johnsonra@mail.nih.gov', role =   "aut"),
+                      person("Laura",   'Gayowski', email =  'laura.m.g@comcast.net', role =   "aut"),
+                      person(  'Lea', 'Jih-Vieira', email =       'leajv@icloud.com', role =   "aut"))
+Description: What the package does (one paragraph)
+Depends: R (>= 3.1.0)
+License: MIT
+LazyData: true
+Suggests: 
+    testthat
