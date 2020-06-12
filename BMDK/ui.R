@@ -10,24 +10,42 @@
 library(shiny)
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
+ui <- shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Old Faithful Geyser Data"),
+  titlePanel("BioMarker Discovery Kit"),
   
-  # Sidebar with a slider input for number of bins 
+  # Sidebar with a slider input with two file inputs, one for training data set and another for test data set 
   sidebarLayout(
     sidebarPanel(
-       sliderInput("bins",
-                   "Number of bins:",
-                   min = 1,
-                   max = 50,
-                   value = 30)
+       fileInput("file1", "Choose Training CSV File",
+                 accept = c(
+                   "text/csv",
+                   "text/comma-separated-values, text/plain",
+                   ".csv"),
+                 placeholder = "No file selected"
+                 ),
+       tags$hr(),
+       checkboxInput("header", "Header", TRUE),  # Will display header if the box is checked
+       
+       
+       fileInput("file2", "Choose Test CSV File",
+                 accept = c(
+                   "text/csv",
+                   "text/comma-separated-values, text/plain",
+                   ".csv"),
+                 placeholder = "No file selected"
+                 ),
+       tags$hr(),
+       checkboxInput("header", "Header", TRUE)
+       
+       
     ),
     
-    # Show a plot of the generated distribution
+    # Show a table of the selected dataset named "contents"
+    ###### only showing one for right now
     mainPanel(
-       plotOutput("distPlot")
+       tableOutput("contents")
     )
   )
 ))

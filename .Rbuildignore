@@ -1,3 +1,8 @@
+
 ^data-raw$
 README.Rmd
 BMDK/
+
+^.*\.Rproj$
+^\.Rproj\.user$
+

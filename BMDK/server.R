@@ -9,18 +9,30 @@
 
 library(shiny)
 
-# Define server logic required to draw a histogram
+# Define server logic required to define a table
+
 shinyServer(function(input, output) {
-   
-  output$distPlot <- renderPlot({
+
+# Rendering a table for "contents"
+  output$contents <- renderTable({
     
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2] 
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
     
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+# Naming a variable that selects the file input from "file1"
+      inFile <- input$file1
+
+  
+# Input$file1 will be NULL initially
+# User will select file with 'name', 'type', and 'datapath' columns
+# This datapath column contains filenames where the data can be retrieved
+      if (is.null(inFile))
+        return(NULL)
+      
+# Reading in the csv file
+      
+      read.csv(inFile$datapath, header = input$header, nrows = 10)
+    
     
   })
+  
   
 })
