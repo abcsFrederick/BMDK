@@ -29,10 +29,17 @@ shinyServer(function(input, output) {
       
 # Reading in the csv file
       
-      read.csv(inFile$datapath, header = input$header, nrows = 10)
-    
+   head(t(read.table(inFile$datapath, nrows = 10)))
+
+
     
   })
-  
+# Reapeating the same code for the second dataset
+output$contents2 <- renderTable({
+  inFile2 <- input$file2
+  if(is.null(inFile2))
+    return(NULL)
+  head(t(read.table(inFile2$datapath, nrows = 10)))
+})
   
 })
