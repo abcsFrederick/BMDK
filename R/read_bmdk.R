@@ -1,10 +1,16 @@
-#' Read in a dataset with the proper format for BMDK
+#' Read BMDK data
+#' 
+#' Read in a test or training dataset with the proper format for BMDK.
 #' 
 #' @param f path to input file
 #' @return A data.frame formatted and tidied for BMDK
+#' @examples
+#' test_data <- read_bmdk(system.file('extdata', 'BMDK_test.txt', package = 'BMDK'))
+#' @export
+#' @importFrom magrittr %>%
 read_bmdk <- function(f)
 {
-    dat <- read.table(f) %>%
+    dat <- utils::read.table(f) %>%
         t()
     
     sid <- dat[,1]

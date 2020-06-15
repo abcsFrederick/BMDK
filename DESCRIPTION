@@ -5,9 +5,12 @@ Authors@R: personList(person("Brian",       'Luke', email =  'lukebria@mail.nih.
                       person("Randy",    'Johnson', email = 'johnsonra@mail.nih.gov', role =   "aut"),
                       person("Laura",   'Gayowski', email =  'laura.m.g@comcast.net', role =   "aut"),
                       person(  'Lea', 'Jih-Vieira', email =       'leajv@icloud.com', role =   "aut"))
-Description: What the package does (one paragraph)
+Description: The Biomarker Discovery Kit (BMDK) package provides a framework to aid in bimarker discovery. The GitHub repository also includes a Shiny app for use with the package (see https://github.com/abcsFrederick/BMDK).
 Depends: R (>= 3.1.0)
-License: MIT
+License: MIT + file LICENSE
 LazyData: true
+Imports:
+    magrittr
 Suggests: 
     testthat
+RoxygenNote: 7.1.0
