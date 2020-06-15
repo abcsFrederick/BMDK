@@ -8,6 +8,9 @@
 #
 
 library(shiny)
+library(magrittr)
+#library(BMDK)
+source('../R/read_bmdk.R')
 
 # Define server logic required to define a table
 
@@ -39,7 +42,10 @@ output$contents2 <- renderTable({
   inFile2 <- input$file2
   if(is.null(inFile2))
     return(NULL)
-  head(t(read.table(inFile2$datapath, nrows = 10)))
+  
+  read_bmdk(inFile$datapath) %>%
+      head()
+  
 })
   
 })
