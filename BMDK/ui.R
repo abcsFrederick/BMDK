@@ -3,46 +3,43 @@
 # run the application by clicking 'Run App' above.
 #
 # Find out more about building applications with Shiny here:
-# 
+#
 #    http://shiny.rstudio.com/
 #
 
 library(shiny)
 
-# Define UI for application that draws a histogram
+# Define UI for application that displays two tables
 ui <- shinyUI(fluidPage(
-  
   # Application title
   titlePanel("BioMarker Discovery Kit"),
   
-  # Sidebar with a slider input with two file inputs, one for training data set and another for test data set 
+  # Sidebar with two file inputs, one for training data set and another for test data set
   sidebarLayout(
     sidebarPanel(
-       fileInput("file1", "Choose Training TXT File",
-                 accept = c(
-                   "text/txt",
+      fileInput(
+        "file1",
+        "Choose Training TXT File",
+        accept = c("text/txt",
                    "text/tab-delimited-text, text/plain",
                    ".txt"),
-                 placeholder = "No file selected"
-                 ),
-   
-       
-       
-       fileInput("file2", "Choose Test TXT File",
-                 accept = c(
-                   "text/txt",
+        placeholder = "No file selected"
+      ),
+      
+      
+      
+      fileInput(
+        "file2",
+        "Choose Test TXT File",
+        accept = c("text/txt",
                    "text/tab-delimited-text, text/plain",
                    ".txt"),
-                 placeholder = "No file selected"
-                 )
+        placeholder = "No file selected"
+      )
     ),
     
-    # Show a table of the selected dataset named "contents"
-    ###### only showing one for right now
-    mainPanel(
-       tableOutput("contents"),
-       tableOutput("contents2")
-
-    )
+    # Show a table of the selected data set named "contents"
+    mainPanel(tableOutput("contents"),
+              tableOutput("contents2"))
   )
 ))
