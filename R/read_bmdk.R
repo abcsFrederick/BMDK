@@ -10,42 +10,46 @@
 #' @importFrom magrittr %>%
 read_bmdk <- function(f)
 {
-    dat <- utils::read.table(f, nrows = 10) %>%
-        t()
+    # use readLines to fetch sample IDs, case status
     
-    # Save all of the column names of the data set
-    datnames <- dat[1, ] %>%
-        as.vector()
+    # read in feature data
+    dat <- utils::read.table(f, skip = 2)
     
-    # Save the sample IDs column
-    sid <- dat[-1, 1]
+    # strip out V1 (feature names)
     
-    # Save the case/control status column
-    case <- dat[-1, 2] %>%
-        as.integer()
+    # transpose
     
-    # Save the matrix of the features data
-    dat <- dat[-1, -(1:2)]
+    # change column names to feature names
     
-    # Get the total number of features
-    n <- ncol(dat)
+    # add row names for sample IDs
     
-    # Convert the matrix to a data.frame
-    dat <- dat[, ] %>%
-        as.numeric() %>%
-        matrix(ncol = n) %>%
-        as.data.frame()
+    # modify / remove this chunk of code
+    # # Save all of the feature names of the data set
+    # datnames <- dat[1, -c(1:2)] %>%
+    #     as.vector()
+    # 
+    # # Save the sample IDs column
+    # sid <- dat[-1, 1]
+    # 
+    # # Save the case/control status column
+    # case <- dat[-1, 2] %>%
+    #     as.integer()
+    # 
+    # # Save the matrix of the features data
+    # dat <- dat[-1, -(1:2)]
+    # 
+    # # Get the total number of features
+    # n <- ncol(dat)
+    # 
+    # # Convert the matrix to a data.frame
+    # dat <- as.numeric(dat) %>%
+    #        matrix(ncol = n,
+    #               dimnames = list(sid,           # row names
+    #                               datnames)) %>% # column names
+    # 
+    # # Add the case/control status
+    # dat <- cbind(sid, case, dat)
     
-    # Add the feature names
-    names(dat) <- datnames[(3:length(datnames))]
-    
-    # Add the case/control status
-    dat <- cbind(a = case, dat)
-    colnames(dat)[1] <- datnames[2]
-    
-    # Add the sample IDs
-    dat <- cbind(b = sid, dat)
-    colnames(dat)[1] <- datnames[1]
-    
-    return(dat)
+    return(list(case = case, # integer vector
+                feat = dat)) # numeric matrix
 }

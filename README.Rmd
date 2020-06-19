@@ -10,5 +10,17 @@ knitr::opts_chunk$set(echo = TRUE)
 # BMDK - Biomarker Discovery Kit
 
 ```{r main code}
-# code goes here
+dat <- read_bmdk(system.file('extdata', 'BMDK_test.txt', package = 'BMDK')) %>%
+    normalize_bmdk()
+
+#scale/normalize data
+# scale each feature in (0,1]
+
+#dat <-
+#select(dat, -sid, -case) %>% # deal with sid and case
+#apply?
+dat <- apply(dat, 2, function(.x){.x / max(.x)}) # watch for NAs
+
+# look for outliers
+
 ```
