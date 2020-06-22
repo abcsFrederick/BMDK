@@ -3,26 +3,46 @@
 #' Read in a test or training dataset with the proper format for BMDK.
 #'
 #' @param f path to input file
-#' @return A data.frame formatted and tidied for BMDK
+#' @return A matrix formatted and tidied for BMDK
 #' @examples
 #' test_data <- read_bmdk(system.file('extdata', 'BMDK_test.txt', package = 'BMDK'))
 #' @export
 #' @importFrom magrittr %>%
 read_bmdk <- function(f)
 {
-    # use readLines to fetch sample IDs, case status
+    # Use readLines to fetch sample IDs, case status
+    lines <- readLines(f, n = 2)
+    splitlines <- strsplit(lines, split = '\t', fixed = TRUE)
     
-    # read in feature data
-    dat <- utils::read.table(f, skip = 2)
+    # Create sid, a character vector of sample IDs
+    sid <- splitlines[[1]] %>%
+        unlist()
+    sid <- sid[-1]
     
-    # strip out V1 (feature names)
+    # Create case, an integer vector of case/control status
+    case = splitlines[[2]] 
+    case <- case[-1] %>%
+        unlist() %>%
+        as.integer()
     
-    # transpose
+    # Read in feature data
+    dat <- utils::read.table(f, skip = 2, nrows = 10)
+
+    # Strip out V1 (feature names)
+    datnames <- dat[, 1] %>%
+        as.vector()
     
-    # change column names to feature names
+    # Transpose
+    dat <- dat[, -1] %>%
+        t()
     
-    # add row names for sample IDs
+    # Convert dat to a numeric matrix and label the rows and columns
+    dat <- as.numeric(dat) %>%
+        matrix(ncol = ncol(dat),
+               dimnames = list(sid, # Row names (Sample IDs)
+               datnames))           # Column names (Feature names)
     
+    ##########################OLD CODE################################
     # modify / remove this chunk of code
     # # Save all of the feature names of the data set
     # datnames <- dat[1, -c(1:2)] %>%
@@ -50,6 +70,6 @@ read_bmdk <- function(f)
     # # Add the case/control status
     # dat <- cbind(sid, case, dat)
     
-    return(list(case = case, # integer vector
-                feat = dat)) # numeric matrix
+    return(list(case = case, # Integer vector
+                feat = dat)) # Numeric matrix
 }
