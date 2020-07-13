@@ -7,12 +7,13 @@ output: md_document
 knitr::opts_chunk$set(echo = TRUE)
 library(BMDK)
 library(magrittr)
+library(OutlierDetection)
 ```
 
 # BMDK - Biomarker Discovery Kit
 
 ```{r main code}
-dat <- read_bmdk(system.file('extdata', 'BMDK_test.txt', package = 'BMDK')) #%>%
+dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) #%>%
     #normalize_bmdk()
 
 #scale/normalize data
@@ -21,7 +22,20 @@ dat <- read_bmdk(system.file('extdata', 'BMDK_test.txt', package = 'BMDK')) #%>%
 dat$feat <- apply(dat$feat, 2, function(.x){.x / max(.x, na.rm = TRUE)})
 
 # look for outliers
-
+# use the OutlierDetection pacakge
+nn(dat$feat, Method = 'manhattan', cutoff = 0.95, boottimes = 100)[[2]]
+  # remove outliers from training set
+  # keep them in the test set
 
 # impute missing values if desired
+
+# Tests
+for(i in 1:ncol(dat$feat))
+{
+    # Wilcoxon Rank Sum test
+    wilcox.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])
+    
+    # Two Sample t-test
+    t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])
+}
 ```
