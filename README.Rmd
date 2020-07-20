@@ -16,26 +16,34 @@ library(OutlierDetection)
 dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) #%>%
     #normalize_bmdk()
 
-#scale/normalize data
+# scale/normalize data
 # scale each feature in (0,1]
 
 dat$feat <- apply(dat$feat, 2, function(.x){.x / max(.x, na.rm = TRUE)})
 
-# look for outliers
-# use the OutlierDetection pacakge
-nn(dat$feat, Method = 'manhattan', cutoff = 0.95, boottimes = 100)[[2]]
-  # remove outliers from training set
-  # keep them in the test set
+# Look for outliers
+# Use the OutlierDetection package
+# Store the locations of the outliers in outlierlocs
+outlierlocs <- nn(dat$feat, k = 2, Method = 'manhattan', cutoff = 0.95, boottimes = 100)[[2]]
 
-# impute missing values if desired
+  # Remove outliers from training set
+dat$case <- dat$case[-outlierlocs]
+dat$feat <- dat$feat[-outlierlocs, ]
+
+  # Keep them in the test set
+
+# Impute missing values if desired
 
 # Tests
+wresults <- numeric(ncol(dat$feat))
+tresults <- numeric(ncol(dat$feat))
+
 for(i in 1:ncol(dat$feat))
 {
     # Wilcoxon Rank Sum test
-    wilcox.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])
-    
+    wresults[i] <- wilcox.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i], exact = F)[[3]]
+  
     # Two Sample t-test
-    t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])
+    tresults[i] <- t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[3]]
 }
 ```
