@@ -21,16 +21,15 @@ dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) #%>
 
 dat$feat <- apply(dat$feat, 2, function(.x){.x / max(.x, na.rm = TRUE)})
 
-# Look for outliers
-# Use the OutlierDetection package
+# Look for outliers using the OutlierDetection package
 # Store the locations of the outliers in outlierlocs
 outlierlocs <- nn(dat$feat, k = 2, Method = 'manhattan', cutoff = 0.95, boottimes = 100)[[2]]
 
-  # Remove outliers from training set
+# Remove outliers from the training set
 dat$case <- dat$case[-outlierlocs]
 dat$feat <- dat$feat[-outlierlocs, ]
 
-  # Keep them in the test set
+# Keep them in the test set
 
 # Impute missing values if desired
 
@@ -48,8 +47,37 @@ for(i in 1:ncol(dat$feat))
 }
 
 # Identify a unique list of the top features from both tests
-topfeatures <- unique(c(colnames(dat$feat)[order(wresults)[1:10]], colnames(dat$feat)[order(tresults)[1:10]]))
+topfeatures <- unique(c(colnames(dat$feat)[order(wresults)[1:10]],
+                        colnames(dat$feat)[order(tresults)[1:10]]))
 
 # Run the list of top features through a Pearson Correlation
-featurecorrelations <- cor(dat$feat[ ,topfeatures], method = "pearson")
+# Store the Pearson Correlation coefficients in corrcalculations
+corrcalculations <- cor(dat$feat[ ,topfeatures], method = "pearson")
+
+# Identify any features with a high correlation (0.8 <= r < 1.0)
+corrfeatures <- which(corrcalculations >= 0.8 & corrcalculations < 1.0, arr.ind = T)
+
+########### NEED TO FIX THIS IF STATEMENT, THROWS AN ERROR ###########
+if (!is.empty{corrfeatures})
+{
+  # If highly correlated features are identified, retrieve those feature names
+  # Each row in corrfeaturepairs contains the names of a pair of correlated features
+  corrfeaturepairs <- matrix(c(rownames(corrcalculations[corrfeatures[,1], corrfeatures[,2]]),
+                        colnames(corrcalculations[corrfeatures[,1], corrfeatures[,2]])), 
+                        nrow = nrow(corrfeatures), ncol = ncol(corrfeatures))
+  
+  for (i in nrow(corrfeaturepairs))
+  {
+    # For each pair of features, identify which has a smaller mean value in the original data
+    featuremaxes <- c(mean(dat$feat[,corrfeaturepairs[i,1]]),
+                      mean(dat$feat[,corrfeaturepairs[i,2]]))
+    
+    minfeature <- min(featuremaxes)
+    
+    # Throw out the feature in topfeatures that has the smaller mean value
+    topfeatures <- topfeatures[-match(corrfeaturepairs[i, match(minfeature, featuremaxes)],
+                                      topfeatures)]
+  }
+}
+
 ```
