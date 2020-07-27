@@ -55,7 +55,7 @@ topfeatures <- unique(c(colnames(dat$feat)[order(wresults)[1:10]],
 corrcalculations <- cor(dat$feat[ ,topfeatures], method = "pearson")
 
 # Identify any features with a high correlation (0.8 <= r < 1.0)
-corrfeatures <- which(corrcalculations >= 0.8 & corrcalculations < 1.0, arr.ind = T)
+corrfeatures <- which(corrcalculations >= 0.1 & corrcalculations < 1.0, arr.ind = T)
 
 ########### NEED TO FIX THIS IF STATEMENT, THROWS AN ERROR ###########
 if (!is.empty{corrfeatures})
@@ -65,18 +65,24 @@ if (!is.empty{corrfeatures})
   corrfeaturepairs <- matrix(c(rownames(corrcalculations[corrfeatures[,1], corrfeatures[,2]]),
                         colnames(corrcalculations[corrfeatures[,1], corrfeatures[,2]])), 
                         nrow = nrow(corrfeatures), ncol = ncol(corrfeatures))
-  
+
+
   for (i in nrow(corrfeaturepairs))
   {
-    # For each pair of features, identify which has a smaller mean value in the original data
-    featuremaxes <- c(mean(dat$feat[,corrfeaturepairs[i,1]]),
-                      mean(dat$feat[,corrfeaturepairs[i,2]]))
+      if(corrfeaturepairs[i,1] %in% topfeatures &
+         corrfeaturepairs[i,2] %in% topfeatures)
+      {
+      
+            # For each pair of features, identify which has a smaller mean value in the original data
+            featuremaxes <- c(mean(dat$feat[,corrfeaturepairs[i,1]]),
+                              mean(dat$feat[,corrfeaturepairs[i,2]]))
     
-    minfeature <- min(featuremaxes)
+            minfeature <- min(featuremaxes)
     
-    # Throw out the feature in topfeatures that has the smaller mean value
-    topfeatures <- topfeatures[-match(corrfeaturepairs[i, match(minfeature, featuremaxes)],
-                                      topfeatures)]
+            # Throw out the feature in topfeatures that has the smaller mean value
+            topfeatures <- topfeatures[-match(corrfeaturepairs[i, match(minfeature, featuremaxes)],
+                                              topfeatures)]
+      }
   }
 }
 
