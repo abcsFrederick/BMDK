@@ -14,7 +14,11 @@ library(OutlierDetection)
 
 ```{r main code}
 dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) #%>%
-    #normalize_bmdk()
+    # detectOutliers_bmdk() %>%
+    # renormalize_bmdk() %>%
+    # filter_bmdk() %>%
+    # pickFeatures_bmdk() %>%
+    # validate_bmdk()
 
 # scale/normalize data
 # scale each feature in (0,1]
