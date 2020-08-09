@@ -13,9 +13,9 @@ library(OutlierDetection)
 # BMDK - Biomarker Discovery Kit
 
 ```{r main code}
-dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) #%>%
-    # detectOutliers_bmdk() %>%
-    # renormalize_bmdk() %>%
+
+dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) %>%
+    detectOutliers_bmdk() #%>%
     # filter_bmdk() %>%
     # pickFeatures_bmdk() %>%
     # validate_bmdk()
@@ -25,13 +25,6 @@ dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) #%>
 
 dat$feat <- apply(dat$feat, 2, function(.x){.x / max(.x, na.rm = TRUE)})
 
-# Look for outliers using the OutlierDetection package
-# Store the locations of the outliers in outlierlocs
-outlierlocs <- nn(dat$feat, k = 2, Method = 'manhattan', cutoff = 0.95, boottimes = 100)[[2]]
-
-# Remove outliers from the training set
-dat$case <- dat$case[-outlierlocs]
-dat$feat <- dat$feat[-outlierlocs, ]
 
 # Keep them in the test set
 
@@ -61,8 +54,7 @@ corrcalculations <- cor(dat$feat[ ,topfeatures], method = "pearson")
 # Identify any features with a high correlation (0.8 <= r < 1.0)
 corrfeatures <- which(corrcalculations >= 0.1 & corrcalculations < 1.0, arr.ind = T)
 
-########### NEED TO FIX THIS IF STATEMENT, THROWS AN ERROR ###########
-if (!is.empty{corrfeatures})
+if (length(corrfeatures) > 0)
 {
   # If highly correlated features are identified, retrieve those feature names
   # Each row in corrfeaturepairs contains the names of a pair of correlated features
@@ -78,13 +70,15 @@ if (!is.empty{corrfeatures})
       {
       
             # For each pair of features, identify which has a smaller mean value in the original data
+        #### NEED TO USE THE ORIGINAL UNNORMALIZED DATA FOR THIS, FIX ###
             featuremaxes <- c(mean(dat$feat[,corrfeaturepairs[i,1]]),
                               mean(dat$feat[,corrfeaturepairs[i,2]]))
     
             minfeature <- min(featuremaxes)
     
             # Throw out the feature in topfeatures that has the smaller mean value
-            topfeatures <- topfeatures[-match(corrfeaturepairs[i, match(minfeature, featuremaxes)],
+            topfeatures <- topfeatures[-match(corrfeaturepairs[i, match(minfeature,
+                                                                        featuremaxes)],
                                               topfeatures)]
       }
   }

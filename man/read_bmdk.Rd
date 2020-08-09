@@ -10,7 +10,7 @@ read_bmdk(f)
 \item{f}{path to input file}
 }
 \value{
-A list with case/control status and a matrix formatted and tidied for BMDK
+A list with case/control status, a matrix, and max feature value formatted and tidied for BMDK
 }
 \description{
 Read in a test or training dataset with the proper format for BMDK.

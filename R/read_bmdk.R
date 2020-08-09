@@ -3,11 +3,12 @@
 #' Read in a test or training dataset with the proper format for BMDK.
 #'
 #' @param f path to input file
-#' @return A list with case/control status and a matrix formatted and tidied for BMDK
+#' @return A list with case/control status, a matrix, and max feature value formatted and tidied for BMDK
 #' @examples
 #' test_data <- read_bmdk(system.file('extdata', 'BMDK_test.txt', package = 'BMDK'))
 #' @export
 #' @importFrom magrittr %>%
+
 read_bmdk <- function(f)
 {
     # Use readLines to fetch sample IDs, case status
@@ -35,6 +36,13 @@ read_bmdk <- function(f)
     dimnames(dat) <- list(sid,         # Row names (Sample IDs)
                           datnames)    # Column names (Feature names)
     
-    return(list(case = case, # Integer vector
-                feat = dat)) # Numeric matrix
+    # Store the max value of each column (feature) in dat
+    maxfeat <- apply(dat, 2, max)
+    
+    # Normalize dat
+    dat <- apply(dat, 2, function(.x){.x / max(.x, na.rm = TRUE)})
+    
+    return(list(case = case,        # Integer vector
+                feat = dat,         # Numeric matrix
+                maxfeat = maxfeat)) # Numeric vector
 }
