@@ -10,7 +10,7 @@ Depends: R (>= 3.1.0)
 License: MIT + file LICENSE
 LazyData: true
 Imports:
-    magrittr
+    magrittr, OutlierDetection
 Suggests: 
     testthat
 RoxygenNote: 7.1.0

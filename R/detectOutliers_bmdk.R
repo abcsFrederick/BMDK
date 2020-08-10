@@ -7,7 +7,8 @@
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
 #'        from each column in feat
 #' @return List containing 3 elements (case, feat, maxfeat) with the outliers removed
-
+#' @export 
+#' @importFrom OutlierDetection nn
 detectOutliers_bmdk <- function(dat)
 {
   # Look for outliers using the OutlierDetection package

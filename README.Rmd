@@ -20,11 +20,6 @@ dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) %>%
     # pickFeatures_bmdk() %>%
     # validate_bmdk()
 
-# scale/normalize data
-# scale each feature in (0,1]
-
-dat$feat <- apply(dat$feat, 2, function(.x){.x / max(.x, na.rm = TRUE)})
-
 
 # Keep them in the test set
 
