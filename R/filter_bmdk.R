@@ -3,7 +3,9 @@
 #' @param dat a list containing 3 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
 #'        from each column in feat
-#' @return NEED TO WRITE
+#' @return dat a list containing 4 elements: case, a list of case/control statuses;
+#'        feat, a matrix of normalized feature data; maxfeat, a list of max features
+#'        from each column in feat; testresults, a list of statistical test results
 #' @export
 
 filter_bmdk <- function(dat)
@@ -25,9 +27,13 @@ filter_bmdk <- function(dat)
   # Store all of the test results in testresults, a list of numeric vectors
   testresults <- list(wresults,
                       tresults)
+  
+  # Name each element in testresults
+  ### NOTE: (How to do this so it is not hardcoded??) ###
   names(testresults) <- c('wresults', 'tresults')
   
-  ### ERROR: MULTI-ARGUMENT RETURNS ARE NOT PERMITTED ###
-  return(dat,         # List containing 3 elements
-         testresults) # List of numeric vectors
+  # Add testresults to dat
+  dat$testresults <- testresults
+  
+  return(dat)
 }
