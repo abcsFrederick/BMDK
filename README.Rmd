@@ -16,31 +16,13 @@ library(OutlierDetection)
 
 dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) %>%
     detectOutliers_bmdk() #%>%
-    # filter_bmdk() %>%
+    filter_bmdk() #%>%
     # pickFeatures_bmdk() %>%
     # validate_bmdk()
-
 
 # Keep them in the test set
 
 # Impute missing values if desired
-
-# Tests
-wresults <- numeric(ncol(dat$feat))
-tresults <- numeric(ncol(dat$feat))
-
-for(i in 1:ncol(dat$feat))
-{
-    # Wilcoxon Rank Sum test
-    wresults[i] <- wilcox.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i], exact = F)[[3]]
-  
-    # Two Sample t-test
-    tresults[i] <- t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[3]]
-}
-
-# Identify a unique list of the top features from both tests
-topfeatures <- unique(c(colnames(dat$feat)[order(wresults)[1:10]],
-                        colnames(dat$feat)[order(tresults)[1:10]]))
 
 # Run the list of top features through a Pearson Correlation
 # Store the Pearson Correlation coefficients in corrcalculations

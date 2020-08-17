@@ -11,9 +11,8 @@
 
 renormalize_bmdk <- function(dat)
 {
-  # After removing outliers, reevaluate the max values of each column (feature) in dat
-  ### NEED TO FIGURE OUT HOW TO MULTIPLE MATRIX COLUMNS BY A VECTOR ###
-  dat$feat <- dat$feat*dat$maxfeat
+  # After removing outliers, unnormalize dat
+  dat$feat <- t(t(dat$feat) * dat$maxfeat)
   
   # Reevaluate the max feature of each column
   dat$maxfeat <- apply(dat$feat, 2, max)
