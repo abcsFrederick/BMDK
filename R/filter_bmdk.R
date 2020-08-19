@@ -1,4 +1,7 @@
-#' Write documentation here
+#' Runs the BMDK features data through a series of filtering methods
+#' 
+#' Utilizes the Wilcoxon Rank Sum test, and the t test to identify the significance of
+#' each feature.
 #'
 #' @param dat a list containing 3 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
@@ -14,7 +17,7 @@ filter_bmdk <- function(dat)
   wresults <- numeric(ncol(dat$feat))
   tresults <- numeric(ncol(dat$feat))
   
-  # Run the features data through a series of tests and identify each datum's p-value
+  # Run the features data through a series of tests and identify each datum's significance
   for(i in 1:ncol(dat$feat))
   {
     # Wilcoxon Rank Sum test
@@ -29,7 +32,7 @@ filter_bmdk <- function(dat)
                       tresults)
   
   # Name each element in testresults
-  ### NOTE: (How to do this so it is not hardcoded??) ###
+  ### NOTE: How to do this so it is not hardcoded?? ###
   names(testresults) <- c('wresults', 'tresults')
   
   # Add testresults to dat

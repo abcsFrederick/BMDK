@@ -2,6 +2,7 @@
 
 export(detectOutliers_bmdk)
 export(filter_bmdk)
+export(pickFeatures_bmdk)
 export(read_bmdk)
 importFrom(OutlierDetection,nn)
 importFrom(magrittr,"%>%")

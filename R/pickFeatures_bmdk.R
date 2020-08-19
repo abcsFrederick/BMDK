@@ -1,9 +1,16 @@
-#' Write documentation here
+#' Picks the top features to be used in the BMDK classifier
+#' 
+#' Takes the top features from each of the filtering methods and finds the union. Then
+#' runs those features through a Pearson Correlation test and identifies correlated pairs.
+#' Removes the feature with the smaller max value of each pair from the top features list. 
 #'
 #' @param dat a list containing 4 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
 #'        from each column in feat; testresults, a list of statistical test results
-#' @return NEED TO WRITE
+#' @return dat a list containing 5 elements: case, a list of case/control statuses;
+#'        feat, a matrix of normalized feature data; maxfeat, a list of max features
+#'        from each column in feat; testresults, a list of statistical test results;
+#'        topfeatures, a list of top features names
 #' @export
 #' @importFrom magrittr %>%
 
@@ -29,12 +36,13 @@ pickFeatures_bmdk <- function(dat)
                                  colnames(corrcalculations[corrfeatures[,1], corrfeatures[,2]])), 
                                nrow = nrow(corrfeatures), ncol = ncol(corrfeatures))
     
-    
     for (i in nrow(corrfeaturepairs))
     {
       if(corrfeaturepairs[i,1] %in% dat$topfeatures &
          corrfeaturepairs[i,2] %in% dat$topfeatures)
       {
+        # If both features in pair i are present in dat$topfeatures, remove the feature with
+        # the smaller max value from dat$topfeatures
         
         # For each pair of features, identify which has a smaller max value in the original data
         featuremaxes <- c(dat$maxfeat[corrfeaturepairs[i,1]],
@@ -42,7 +50,7 @@ pickFeatures_bmdk <- function(dat)
         
         minfeature <- min(featuremaxes)
         
-        # Throw out the feature in topfeatures that has the smaller max value
+        # Throw out the feature in dat$topfeatures that has the smaller max value
         dat$topfeatures <- dat$topfeatures[-match(corrfeaturepairs[i, match(minfeature,
                                                                     featuremaxes)],
                                           dat$topfeatures)]
