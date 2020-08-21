@@ -10,7 +10,8 @@
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
 #'        from each column in feat; testresults, a list of statistical test results
 #' @export
-
+#' @importFrom stats t.test
+#' @importFrom stats wilcox.test
 filter_bmdk <- function(dat)
 {
   # Initialize vectors to store the results of each test

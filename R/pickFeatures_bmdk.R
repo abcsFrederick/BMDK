@@ -13,7 +13,7 @@
 #'        topfeatures, a list of top features names
 #' @export
 #' @importFrom magrittr %>%
-
+#' @importFrom stats cor
 pickFeatures_bmdk <- function(dat)
 {
   
