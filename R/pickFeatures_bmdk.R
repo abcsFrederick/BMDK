@@ -12,21 +12,21 @@
 #'        from each column in feat; testresults, a list of statistical test results;
 #'        topfeatures, a list of top features names
 #' @export
-#' @importFrom magrittr %>%
 #' @importFrom stats cor
 pickFeatures_bmdk <- function(dat)
 {
   
   # Identify a unique list of the top features from both tests
   dat$topfeatures <- unique(c(colnames(dat$feat)[order(dat$testresults$wresults)[1:10]],
-                          colnames(dat$feat)[order(dat$testresults$tresults)[1:10]]))
+                          colnames(dat$feat)[order(dat$testresults$tresults)[1:10]]),
+                          colnames(dat$feat)[order(dat$testresults$gresults)[1:10]])
   
   # Run the list of top features through a Pearson Correlation
   # Store the Pearson Correlation coefficients in corrcalculations
   corrcalculations <- cor(dat$feat[ ,dat$topfeatures], method = "pearson")
   
   # Identify any features with a high correlation (0.8 <= r < 1.0)
-  corrfeatures <- which(corrcalculations >= 0.5 & corrcalculations < 1.0, arr.ind = T)
+  corrfeatures <- which(corrcalculations >= 0.8 & corrcalculations < 1.0, arr.ind = T)
   
   if (length(corrfeatures) > 0)
   {

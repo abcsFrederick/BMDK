@@ -16,7 +16,8 @@ detectOutliers_bmdk <- function(dat)
   outlierlocs <- nn(dat$feat, k = 2, Method = 'manhattan', cutoff = 0.95, boottimes = 100)[[2]]
   
   
-  if (length(outlierlocs) > 0) {
+  if (length(outlierlocs) > 0)
+  {
     # Remove outliers from the training set
     dat$case <- dat$case[-outlierlocs]
     dat$feat <- dat$feat[-outlierlocs, ]

@@ -17,6 +17,6 @@ dat a list containing 4 elements: case, a list of case/control statuses;
        from each column in feat; testresults, a list of statistical test results
 }
 \description{
-Utilizes the Wilcoxon Rank Sum test, and the t test to identify the significance of
-each feature.
+Utilizes the Wilcoxon Rank Sum test, the t test, and the Decision Tree Gini
+Index to identify the significance of each feature.
 }

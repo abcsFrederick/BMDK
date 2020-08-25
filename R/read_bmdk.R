@@ -19,6 +19,7 @@ read_bmdk <- function(f)
     sid <- splitlines[[1]][-1]
     
     # Create case, an integer vector of case/control status
+    # 0 represents controls, 1 represents cases
     case = splitlines[[2]][-1] %>%
            as.integer()
     
