@@ -87,9 +87,9 @@ dtgini <- function(dat)
           d1infog <- -((d1caseprob*log(d1caseprob)) +
                          (d1controlprob*log(d1controlprob)))
         }
-        #print(d1infog)
+        
         # Daughter Node 2
-        if (d1caseprob == 0 | d2controlprob == 0) {
+        if (d2caseprob == 0 | d2controlprob == 0) {
           
           d2infog <- 0
 
@@ -97,17 +97,12 @@ dtgini <- function(dat)
           d2infog <- -((d2caseprob*log(d2caseprob)) +
                          (d2controlprob*log(d2controlprob)))
         }
-        #print(d2infog)
-        # Calculate the weighted sum Information Gain for this split and store it
-        # in icolresults
-        ### NOTE: I am still getting NaNs when calculating the finalinfog ###
+       
         finalinfog <- sum(d1infog * (d1length/numsamples), d2infog * (d2length/numsamples))
-        print(finalinfog)
-        #print((d2infog * (d2length/numsamples)))
         icolresults[i] <- finalinfog
       }
     }
-    #print(length(icolresults))
+
     # For each feature, find the smallest weighted Gini Index and store it
     # in finalresults
     gfinalresults[j] <- min(gcolresults)
@@ -115,7 +110,6 @@ dtgini <- function(dat)
     # For each feature, find the smallest weighted Information Gain value and
     # store it in finalresults
     ifinalresults[j] <- min(icolresults)
-    #print(ifinalresults[j])
   }
 
   # Combine gfinalresults and ifinalresults into a single list to return
