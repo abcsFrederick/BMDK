@@ -1,7 +1,7 @@
 #' Detect outliers in the BMDK data
 #'
-#' Using the k Nearest Neighbours Distance method, detect outliers in the data and
-#' remove them. After removing the outliers, renormalize the data.
+#' Using the k Nearest Neighbours Distance method, detect outliers in the data
+#' and remove them. After removing the outliers, renormalize the data.
 #'
 #' @param dat a list containing 3 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features

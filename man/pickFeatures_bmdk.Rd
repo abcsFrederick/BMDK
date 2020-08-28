@@ -18,7 +18,8 @@ dat a list containing 5 elements: case, a list of case/control statuses;
        topfeatures, a list of top features names
 }
 \description{
-Takes the top features from each of the filtering methods and finds the union. Then
-runs those features through a Pearson Correlation test and identifies correlated pairs.
-Removes the feature with the smaller max value of each pair from the top features list.
+Takes the top features from each of the filtering methods and finds the
+union. Then runs those features through a Pearson Correlation test and
+identifies correlated pairs. Removes the feature with the smaller max value
+of each pair from the top features list.
 }

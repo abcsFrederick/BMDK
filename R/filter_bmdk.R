@@ -17,7 +17,6 @@ filter_bmdk <- function(dat)
   # Initialize vectors to store the results of each test
   wresults <- numeric(ncol(dat$feat))
   tresults <- numeric(ncol(dat$feat))
-  gresults <- numeric(ncol(dat$feat))
   
   # Run the features data through a series of tests and identify each datum's significance
   for (i in 1:ncol(dat$feat))
@@ -29,17 +28,21 @@ filter_bmdk <- function(dat)
     tresults[i] <- t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[3]]
   }
   
-  # Decision Tree Gini Index
-  gresults <- dtgini(dat)
+  # Decision Tree Gini Index and Information Gain
+  giniinforesults <- dtgini(dat)
+  
+  gresults <- giniinforesults$gresults
+  iresults <- giniinforesults$infogresults
   
   # Store all of the test results in testresults, a list of numeric vectors
   testresults <- list(wresults,
                       tresults,
-                      gresults)
+                      gresults,
+                      iresults)
   
   # Name each element in testresults
-  ### NOTE: How to do this so it is not hardcoded?? ###
-  names(testresults) <- c('wresults', 'tresults', 'gresults')
+  ### NOTE: Can we do this so it is not hardcoded?? ###
+  names(testresults) <- c('wresults', 'tresults', 'gresults', 'iresults')
   
   # Add testresults to dat
   dat$testresults <- testresults

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dtgini.R
 \name{dtgini}
 \alias{dtgini}
-\title{Runs a Decision Tree Gini Index}
+\title{Runs a Decision Tree Gini Index and Decision Tree Information Gain}
 \usage{
 dtgini(dat)
 }
@@ -19,5 +19,6 @@ This procedure uses each feature to perform a one-node split of all N samples
 in the parent node into 2 daughter nodes using N-1 cut points, as in a
 decision tree. This procedure's goal is to find the most optimal split to
 identify between cases and controls for each feature. To do this, this function
-identifies the smallest weighted Gini Index value for each feature.
+identifies the smallest weighted Gini Index value and smallest weighted 
+Information Gain value for each feature.
 }

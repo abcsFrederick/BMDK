@@ -3,7 +3,8 @@
 #' Read in a test or training dataset with the proper format for BMDK.
 #'
 #' @param f path to input file
-#' @return A list with case/control status, a matrix, and max feature value formatted and tidied for BMDK
+#' @return A list with case/control status, a matrix, and max feature value
+#'         formatted and tidied for BMDK
 #' @examples
 #' test_data <- read_bmdk(system.file('extdata', 'BMDK_test.txt', package = 'BMDK'))
 #' @export
@@ -19,7 +20,7 @@ read_bmdk <- function(f)
     sid <- splitlines[[1]][-1]
     
     # Create case, an integer vector of case/control status
-    # 0 represents controls, 1 represents cases
+    # 0 = controls, 1 = cases
     case = splitlines[[2]][-1] %>%
            as.integer()
     

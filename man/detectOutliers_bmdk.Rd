@@ -15,6 +15,6 @@ from each column in feat}
 List containing 3 elements (case, feat, maxfeat) with the outliers removed
 }
 \description{
-Using the k Nearest Neighbours Distance method, detect outliers in the data and
-remove them. After removing the outliers, renormalize the data.
+Using the k Nearest Neighbours Distance method, detect outliers in the data
+and remove them. After removing the outliers, renormalize the data.
 }
