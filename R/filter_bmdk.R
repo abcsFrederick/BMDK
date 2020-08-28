@@ -32,7 +32,7 @@ filter_bmdk <- function(dat)
   giniinforesults <- dtgini(dat)
   
   gresults <- giniinforesults$gresults
-  iresults <- giniinforesults$infogresults
+  iresults <- giniinforesults$iresults
   
   # Store all of the test results in testresults, a list of numeric vectors
   testresults <- list(wresults,

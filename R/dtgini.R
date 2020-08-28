@@ -102,16 +102,22 @@ dtgini <- function(dat)
         icolresults[i] <- finalinfog
       }
     }
+        
+        # Calculate the weighted sum Information Gain for this split and store it
+        # in icolresults
+        finalinfog <- sum(d1infog * (d1length/numsamples), d2infog * (d2length/numsamples))
+        
+        icolresults[i] <- finalinfog
 
-    # For each feature, find the smallest weighted Gini Index and store it
-    # in finalresults
-    gfinalresults[j] <- min(gcolresults)
-    
-    # For each feature, find the smallest weighted Information Gain value and
-    # store it in finalresults
-    ifinalresults[j] <- min(icolresults)
+        # For each feature, find the smallest weighted Gini Index and store it
+        # in finalresults
+        gfinalresults[j] <- min(gcolresults)
+        
+        # For each feature, find the smallest weighted Information Gain value and
+        # store it in finalresults
+        ifinalresults[j] <- min(icolresults)
   }
-
+  
   # Combine gfinalresults and ifinalresults into a single list to return
   finalresults <- list(gfinalresults,
                        ifinalresults)
