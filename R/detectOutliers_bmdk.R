@@ -11,10 +11,34 @@
 #' @importFrom OutlierDetection nn
 detectOutliers_bmdk <- function(dat)
 {
-  # Look for outliers using the OutlierDetection package
-  # Store the locations of the outliers in outlierlocs
-  outlierlocs <- nn(dat$feat, k = 2, Method = 'manhattan', cutoff = 0.95, boottimes = 100)[[2]]
+  # Search for Outliers:
+  nnIdx <- numeric(nrow(dat$feat))
   
+  nnDist <- numeric(nrow(dat$feat))
+  
+  for (i in 1:nrow(dat$feat)) {
+    
+    neighborsDist <- numeric(nrow(dat$feat))
+    
+    for (k in 1:nrow(dat$feat)) {
+      
+      # Is this bad practice? Should I change this?
+      if (k == i) { neighborsDist[k] <- Inf}
+      else {
+        neighborsDist[k] <- sum( abs(dat$feat[i, ] - dat$feat[k, ])) }
+    }
+    
+    nnDist[i] <- min(neighborsDist)
+    nnIdx[i] <- which(neighborsDist == nnDist[i])
+  }
+  
+  nnStd <- sd(nnDist)
+  nnMean <- mean(nnDist)
+  
+  lowerBound <- nnMean - 3*nnStd
+  upperBound <- nnMean + 3*nnStd
+  
+  outlierlocs <- nnIdx[nnDist < lowerBound | nnDist > upperBound]
   
   if (length(outlierlocs) > 0)
   {

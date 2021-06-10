@@ -5,9 +5,9 @@ output: md_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(BMDK)
+#library(BMDK)
 library(magrittr)
-library(OutlierDetection)
+library(kknn)
 ```
 
 # BMDK - Biomarker Discovery Kit
