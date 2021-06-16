@@ -8,9 +8,11 @@
 #'        from each column in feat
 #' @return List containing 3 elements (case, feat, maxfeat) with the outliers removed
 #' @export 
-#' @importFrom OutlierDetection nn
+#' @importFrom 
 detectOutliers_bmdk <- function(dat)
 {
+  
+  ################### Code that will be replaced by C++ code #################
   # Search for Outliers:
   nnIdx <- numeric(nrow(dat$feat))
   
@@ -18,8 +20,8 @@ detectOutliers_bmdk <- function(dat)
   
   for (i in 1:nrow(dat$feat)) {
     
-    neighborsDist <- numeric(nrow(dat$feat))
-    
+    neighborsDist <- rep(Inf, nrow(dat$feat))
+
     for (k in 1:nrow(dat$feat)) {
       
       # Is this bad practice? Should I change this?
@@ -32,13 +34,11 @@ detectOutliers_bmdk <- function(dat)
     nnIdx[i] <- which(neighborsDist == nnDist[i])
   }
   
-  nnStd <- sd(nnDist)
-  nnMean <- mean(nnDist)
+  ############################################################################
   
-  lowerBound <- nnMean - 3*nnStd
-  upperBound <- nnMean + 3*nnStd
+  upperBound <- mean(nnDist) + 3*sd(nnDist)
   
-  outlierlocs <- nnIdx[nnDist < lowerBound | nnDist > upperBound]
+  outlierlocs <- nnIdx[nnDist > upperBound]
   
   if (length(outlierlocs) > 0)
   {

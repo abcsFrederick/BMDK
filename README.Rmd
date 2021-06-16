@@ -7,7 +7,7 @@ output: md_document
 knitr::opts_chunk$set(echo = TRUE)
 #library(BMDK)
 library(magrittr)
-library(kknn)
+library(Rcpp)
 ```
 
 # BMDK - Biomarker Discovery Kit
