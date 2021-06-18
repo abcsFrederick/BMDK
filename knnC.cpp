@@ -47,7 +47,7 @@ List knnC(int nrow, int ncol, NumericVector f) {
         cumSum= 0;
         
         // Iterate through each feature value of the samples
-        for (int k = i; k < numFeat; k++) {
+        for (int k = 0; k < numFeat; k++) {
           
           absDiff= abs( f[i*numFeat + k] - f[j*numFeat + k] ); // Is this offset correct???
           // Add to the cumulative sum value
@@ -58,7 +58,6 @@ List knnC(int nrow, int ncol, NumericVector f) {
         neighborsDist[j] =  cumSum;
       }
       
-      Rcout << neighborsDist[j] << "\n";
     }
     
     minVal= neighborsDist[0];
@@ -78,8 +77,6 @@ List knnC(int nrow, int ncol, NumericVector f) {
   }
   
   return List::create(nnDist, nnIdx);
-  //return neighborsDist;
-  //return nnDist;
 }
 
 
