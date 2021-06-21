@@ -39,10 +39,10 @@ read_bmdk <- function(f)
                           datnames)    # Column names (Feature names)
     
     # Store the max value of each column (feature) in dat
-    maxfeat <- apply(dat, 2, max)
+    maxfeat <- suppressWarnings(apply(dat, 2, max, na.rm = TRUE))
     
     # Normalize dat
-    dat <- apply(dat, 2, function(.x){.x / max(.x, na.rm = TRUE)})
+    dat <- suppressWarnings(apply(dat, 2, function(.x){.x / max(.x, na.rm = TRUE)}))
     
     return(list(case = case,        # Integer vector
                 feat = dat,         # Numeric matrix

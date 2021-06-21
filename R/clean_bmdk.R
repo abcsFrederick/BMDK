@@ -15,36 +15,34 @@
 clean_bmdk <- function(dat, naThreshold = 0.05)
 {
   
-  f <- dat$feat
-  
   # Calculate the mean and standard deviation of each feature column
-  featMeans <- numeric(ncol(f))
-  featStds <- numeric(ncol(f))
-  for (i in 1:ncol(f)) {
-    featMeans[i] <- mean(f[ , i])
-    featStds[i] <- sd(f[ , i])
-  }
-  
+  featMeans <- apply(dat$feat, 2, mean, na.rm = TRUE)
+  featStds <- apply(dat$feat, 2, sd, na.rm = TRUE)
   
   # If any sample has a value >4𝜎 away from the mean in either direction,
   # convert the value to NA
   lowerThresholds <- featMeans - 4*featStds
   upperThresholds <- featMeans + 4*featStds
   
-  for (j in 1:ncol(f)) {
-    for (k in 1:nrow(f)) {
-      if (f[k, j] > upperThresholds[j] | f[k, j] < lowerThresholds[j]) {
-        f[k, j] <- NA;
+  for (j in 1:ncol(dat$feat)) { # By column
+    for (k in 1:nrow(dat$feat)) { # By row
+      
+      if (!is.na(dat$feat[k, j])) {
+        if (dat$feat[k, j] > upperThresholds[j] | dat$feat[k, j] < lowerThresholds[j]) {
+          dat$feat[k, j] <- NA;
+        }
       }
+      
     }
   }
   
   # If any feature column contains >0.05 NA values, remove the feature column
   # and display a warning message
-  boolF <- is.na(f)
-  numFeatEntries <- nrow(f)
+  boolF <- is.na(dat$feat)
+  numFeatEntries <- nrow(dat$feat)
+  fNames <- colnames(dat$feat)
   
-  for (i in 1:ncol(f)) {
+  for (i in 1:ncol(dat$feat)) {
     
     featNARatio <- sum(boolF[ , i]) / numFeatEntries
     
@@ -53,29 +51,32 @@ clean_bmdk <- function(dat, naThreshold = 0.05)
       dat$maxfeat <- dat$maxfeat[-i]
       
       # Display warning message that the feature was removed
-      #########
+      warning('Feature column removed: ', fNames[i])
     }
   }
   
   # If any sample row contains >0.05 NA values, remove the sample and display
   # a warning message
+  numSampEntries <- ncol(dat$feat)
+  sNames <- rownames(dat$feat)
   
-  numSampEntries <- ncol(f)
+  #sampNARatio <- apply(boolF, 2, function(.x){sum(.x) / numSampEntries})
   
-  for (j in 1:nrow(f)) {
+  for (j in 1:nrow(dat$feat)) {
     
-    sampNARatio <- sum(boolF[j, ]) / numSampEntries
+    sampNARatio <- sum(boolF[ , j]) / numFeatEntries
     
-    if (sampNARatio > naThreshold) {
+    if (sampNARatio > .05) {
       dat$case <- dat$case[-j]
       dat$feat <- dat$feat[-j, ]
       
       # Display warning message that the sample was removed
-      #########
+      warning('Sample row removed: ', sNames[j])
     }
   }
-  
+
   renormalize_bmdk(dat)
   
   return (dat)
+  
 }
