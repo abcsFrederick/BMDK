@@ -2,11 +2,9 @@ context("test-clean_bmdk")
 
 test_that("clean_bmdk returns a valid object", {
   
-  #tst <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) %>%
-  #clean_bmdk()
-  tst <- read_bmdk('/Users/jihvieirala/Documents/BMDK/inst/extdata/BMDK_train.txt') %>%
+  tst <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) %>%
     clean_bmdk()
-  
+
   expect_is(tst, 'list')
   
   #Number of samples should be 100
@@ -23,21 +21,19 @@ test_that("clean_bmdk returns a valid object", {
 
 test_that("clean_bmdk returns the correct warnings", {
   
-  #w <- capture_warnings(read_bmdk(system.file('extdata', 'BMDK_NAs.txt', package = 'BMDK')) %>%
-  #                       clean_bmdk())
-  w <- capture_warnings(read_bmdk('/Users/jihvieirala/Documents/BMDK/inst/extdata/BMDK_NAs.txt') %>%
-                     clean_bmdk())
+  w <- capture_warnings({
+    read_bmdk(system.file('extdata', 'BMDK_NAs.txt', package = 'BMDK')) %>%
+      clean_bmdk()
+    })
   expect_match(w, 'Removing features with excessive missingness: FEAT0002', all = FALSE)
   expect_match(w, 'Removing samples with excessive missingness: SAMP002', all = FALSE)
 })
 
 test_that("clean_bmdk removes the NA features and samples when whole row/columns are filled with NAs", {
   
-  #tst <- read_bmdk(system.file('extdata', 'BMDK_NAs.txt', package = 'BMDK')) %>%
-  #clean_bmdk()
-  tst <- expect_warning(read_bmdk('/Users/jihvieirala/Documents/BMDK/inst/extdata/BMDK_NAs.txt') %>%
-                          clean_bmdk())
-  
+  tst <- read_bmdk(system.file('extdata', 'BMDK_NAs.txt', package = 'BMDK')) %>%
+    clean_bmdk()
+
   # Number of samples should be 99
   expect_equal(nrow(tst$feat), 99)
   expect_equal(length(tst$case), 99)
@@ -52,16 +48,14 @@ test_that("clean_bmdk removes the NA features and samples when whole row/columns
 
 test_that("clean_bmdk removes the NA features and samples with scattered NAs", {
   
-  #w <- capture_warnings(read_bmdk(system.file('extdata', 'BMDK_NAs02.txt', package = 'BMDK')) %>%
-  #                       clean_bmdk())
-  w <- capture_warnings(read_bmdk('/Users/jihvieirala/Documents/BMDK/inst/extdata/BMDK_NAs02.txt') %>%
-                          clean_bmdk())
+  w <- capture_warnings({
+    read_bmdk(system.file('extdata', 'BMDK_NAs02.txt', package = 'BMDK')) %>%
+      clean_bmdk()
+    })
   expect_match(w, 'Removing features with excessive missingness: FEAT0008, FEAT0020', all = FALSE)
   expect_match(w, 'Removing samples with excessive missingness: SAMP004, SAMP149', all = FALSE)
   
-  #tst <- read_bmdk(system.file('extdata', 'BMDK_NAs02.txt', package = 'BMDK')) %>%
-  #clean_bmdk()
-  tst <- expect_warning(read_bmdk('/Users/jihvieirala/Documents/BMDK/inst/extdata/BMDK_NAs02.txt') %>%
+  tst <- expect_warning(read_bmdk(system.file('extdata', 'BMDK_NAs02.txt', package = 'BMDK')) %>%
                           clean_bmdk())
   
   # Number of samples should be 98

@@ -8,11 +8,10 @@
 #'        from each column in feat
 #' @return List containing 3 elements (case, feat, maxfeat) with the outliers removed
 #' @export 
-#' @importFrom 
+#' @importFrom stats sd
 detectOutliers_bmdk <- function(dat)
 {
-  sourceCpp('knnC.cpp') # Where should this line ideally be located? README file?
-  nnInfo <- knnC(nrow= ncol(dat$feat), ncol= nrow(dat$feat), f= c(t(dat$feat)))
+  nnInfo <- knn(nrow= ncol(dat$feat), ncol= nrow(dat$feat), f= c(t(dat$feat)))
   nnDist <- nnInfo[[1]]
   nnIdx <- nnInfo[[2]]
   

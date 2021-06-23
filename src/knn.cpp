@@ -1,19 +1,17 @@
+
 #include <Rcpp.h>
 using namespace Rcpp;
 using namespace std;
 
-// This is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar). Learn
-// more about Rcpp at:
-//
-//   http://www.rcpp.org/
-//   http://adv-r.had.co.nz/Rcpp.html
-//   http://gallery.rcpp.org/
-//
-
+//' Calculate k nearest neighbors
+//' 
+//' @param nrow Number of rows
+//' @param ncol Number of columns
+//' @param f Features matrix
+//'
+//' @export
 // [[Rcpp::export]]
-List knnC(int nrow, int ncol, NumericVector f) {
+List knn(int nrow, int ncol, NumericVector f) {
   
   int numFeat= nrow;
   int numSamp= ncol;
@@ -78,14 +76,3 @@ List knnC(int nrow, int ncol, NumericVector f) {
   
   return List::create(nnDist, nnIdx);
 }
-
-
-
-// You can include R code blocks in C++ files processed with sourceCpp
-// (useful for testing and development). The R code will be automatically 
-// run after the compilation.
-//
-
-//*** R
-//timesTwo(42)
-//*/

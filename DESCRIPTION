@@ -11,6 +11,7 @@ License: MIT + file LICENSE
 LazyData: true
 Imports:
     magrittr, Rcpp
+LinkingTo: Rcpp
 Suggests: 
     testthat
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

@@ -7,11 +7,13 @@
 #' @param dat a list containing 3 elements: case, a list of case/control
 #' statuses; feat, a matrix of normalized feature data; maxfeat, a list of max
 #' features from each column in feat
+#' @param naThreshold Proportion of NAs to allow before dropping a sample or feature due to missingness.
+#' @param sdMultiplier Number of standard deviations defining the threshold for outlier detection. Any values above sdMultiplier standard deviations away from the mean will be removed as an outlier.
 #' @return List containing 3 elements (case, feat, maxfeat) with relevant NA
 #' values and necessary features/samples removed
 #' 
 #' @export 
-#' @importFrom 
+#' @importFrom stats sd
 clean_bmdk <- function(dat, naThreshold = 0.05, sdMultiplier = 4)
 {
   
@@ -19,7 +21,7 @@ clean_bmdk <- function(dat, naThreshold = 0.05, sdMultiplier = 4)
   featMeans <- apply(dat$feat, 2, mean, na.rm = TRUE)
   featStds <- apply(dat$feat, 2, sd, na.rm = TRUE)
   
-  # If any sample has a value >4𝜎 away from the mean in either direction,
+  # If any sample has a value >4 SD away from the mean in either direction,
   # convert the value to NA
   lowerThresholds <- featMeans - sdMultiplier*featStds
   upperThresholds <- featMeans + sdMultiplier*featStds
