@@ -12,7 +12,7 @@
 #' 
 #' @export 
 #' @importFrom 
-clean_bmdk <- function(dat, naThreshold = 0.05)
+clean_bmdk <- function(dat, naThreshold = 0.05, sdMultiplier = 4)
 {
   
   # Calculate the mean and standard deviation of each feature column
@@ -21,62 +21,39 @@ clean_bmdk <- function(dat, naThreshold = 0.05)
   
   # If any sample has a value >4𝜎 away from the mean in either direction,
   # convert the value to NA
-  lowerThresholds <- featMeans - 4*featStds
-  upperThresholds <- featMeans + 4*featStds
+  lowerThresholds <- featMeans - sdMultiplier*featStds
+  upperThresholds <- featMeans + sdMultiplier*featStds
   
-  for (j in 1:ncol(dat$feat)) { # By column
-    for (k in 1:nrow(dat$feat)) { # By row
-      
-      if (!is.na(dat$feat[k, j])) {
-        if (dat$feat[k, j] > upperThresholds[j] | dat$feat[k, j] < lowerThresholds[j]) {
-          dat$feat[k, j] <- NA;
-        }
-      }
-      
-    }
-  }
+  dat$feat <- apply(dat$feat, 1, function(x) {x[x > upperThresholds | x < lowerThresholds] <- NA; return(x)}) %>%
+    t()
   
   # If any feature column contains >0.05 NA values, remove the feature column
   # and display a warning message
   boolF <- is.na(dat$feat)
-  numFeatEntries <- nrow(dat$feat)
-  fNames <- colnames(dat$feat)
   
-  for (i in 1:ncol(dat$feat)) {
+  featNARatio <- (apply(boolF, 2, sum) / nrow(dat$feat)) > naThreshold
+  
+  if (sum(featNARatio) > 0) {
+    warning('Removing features with excessive missingness: ',
+            paste(colnames(dat$feat)[featNARatio], collapse = ', '))
     
-    featNARatio <- sum(boolF[ , i]) / numFeatEntries
-    
-    if (featNARatio > naThreshold) {
-      dat$feat <- dat$feat[ , -i]
-      dat$maxfeat <- dat$maxfeat[-i]
-      
-      # Display warning message that the feature was removed
-      warning('Feature column removed: ', fNames[i])
-    }
+    dat$feat <- dat$feat[ ,-which(featNARatio)]
+    dat$maxfeat <- dat$maxfeat[-which(featNARatio)]
   }
   
   # If any sample row contains >0.05 NA values, remove the sample and display
   # a warning message
-  numSampEntries <- ncol(dat$feat)
-  sNames <- rownames(dat$feat)
+  sampNARatio <- (apply(boolF, 1, sum) / ncol(dat$feat)) > naThreshold
   
-  #sampNARatio <- apply(boolF, 2, function(.x){sum(.x) / numSampEntries})
-  
-  for (j in 1:nrow(dat$feat)) {
+  if (sum(sampNARatio) > 0) {
+    warning('Removing samples with excessive missingness: ',
+            paste(rownames(dat$feat)[sampNARatio], collapse = ', '))
     
-    sampNARatio <- sum(boolF[ , j]) / numFeatEntries
+    dat$feat <- dat$feat[-which(sampNARatio), ]
+    dat$case <- dat$case[-which(sampNARatio)]
     
-    if (sampNARatio > .05) {
-      dat$case <- dat$case[-j]
-      dat$feat <- dat$feat[-j, ]
-      
-      # Display warning message that the sample was removed
-      warning('Sample row removed: ', sNames[j])
-    }
+    renormalize_bmdk(dat)
   }
-
-  renormalize_bmdk(dat)
   
-  return (dat)
-  
+  return(dat)
 }
