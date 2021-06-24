@@ -32,27 +32,3 @@ detectOutliers_bmdk <- function(dat)
   
   return(dat)
 }
-
-#################### Old knn algoritm written in R ###################
-# # Search for Outliers:
-# nnIdx <- numeric(nrow(dat$feat))
-# 
-# nnDist <- numeric(nrow(dat$feat))
-# 
-# for (i in 1:nrow(dat$feat)) {
-# 
-#   neighborsDist <- rep(Inf, nrow(dat$feat))
-# 
-#   for (k in 1:nrow(dat$feat)) {
-# 
-#     # Is this bad practice? Should I change this?
-#     if (k == i) { neighborsDist[k] <- Inf}
-#     else {
-#       neighborsDist[k] <- sum( abs(dat$feat[i, ] - dat$feat[k, ])) }
-#   }
-# 
-#   nnDist[i] <- min(neighborsDist)
-#   nnIdx[i] <- which(neighborsDist == nnDist[i])
-# }
-
-############################################################################

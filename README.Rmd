@@ -8,6 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #library(BMDK)
 library(magrittr)
 library(Rcpp)
+compileAttributes()
 ```
 
 # BMDK - Biomarker Discovery Kit
@@ -15,6 +16,7 @@ library(Rcpp)
 ```{r main code}
 
 dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) %>%
+    clean_bmdk() %>%
     detectOutliers_bmdk() %>%
     filter_bmdk() %>%
     pickFeatures_bmdk() #%>%

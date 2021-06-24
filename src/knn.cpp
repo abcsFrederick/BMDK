@@ -47,13 +47,18 @@ List knn(int nrow, int ncol, NumericVector f) {
         // Iterate through each feature value of the samples
         for (int k = 0; k < numFeat; k++) {
           
-          absDiff= abs( f[i*numFeat + k] - f[j*numFeat + k] ); // Is this offset correct???
-          // Add to the cumulative sum value
-          cumSum= cumSum + absDiff;
+          if (!isnan(f[i*numFeat + k]) && !isnan(f[j*numFeat + k])) {
+            absDiff= abs( f[i*numFeat + k] - f[j*numFeat + k] );
+            // Add to the cumulative sum value
+            cumSum= cumSum + absDiff;
+          }
         }
         
-        // Set the jth element equal to the sum of the abs difference between two samples
-        neighborsDist[j] =  cumSum;
+        if (cumSum != 0) {
+          // Set the jth element equal to the sum of the abs difference between two samples
+          neighborsDist[j] =  cumSum;
+        }
+
       }
       
     }
