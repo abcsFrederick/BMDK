@@ -28,7 +28,7 @@ test_that("knn returns the correct values", {
     expect_equal(tst1[[2]], c(1, 0, 3, 0))
 })
 
-test_that("knnC handles NAs correctly", {
+test_that("knn handles NAs correctly", {
     
     mat2<- matrix(data= c(6, 2, 1, 3, 4, NA, 7, 3, 5, NA, 10, 20),
                   nrow= 3, ncol= 4)
@@ -37,7 +37,7 @@ test_that("knnC handles NAs correctly", {
     nnIdx2 <- numeric(ncolT2)
     nnDist2 <- numeric(ncolT2)
     
-    tst2 <- knnC(nrow= nrowT2, ncol= ncolT2, f= c(t(mat2)))
+    tst2 <- knn(nrow= nrowT2, ncol= ncolT2, f= c(t(mat2)))
     
     expect_equal(tst2[[1]], c(7, 9, 7))
     expect_equal(tst2[[2]], c(2, 0, 0))

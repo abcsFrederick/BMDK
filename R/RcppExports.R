@@ -9,6 +9,6 @@
 #'
 #' @export
 knn <- function(nrow, ncol, f) {
-    .Call('_BMDK_knn', PACKAGE = 'BMDK', nrow, ncol, f)
+    .Call(`_BMDK_knn`, nrow, ncol, f)
 }
 
