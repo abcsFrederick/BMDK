@@ -39,83 +39,88 @@ dtgini <- function(dat)
     # Gain
     for (i in 1:(nrow(dat$feat)-1))
     {
-      # If feature value [idxsorted[i],j] is not equal to feature value
-      # [idxsorted[i+1],j], calculate the Gini Index and Information Gain
-      if (dat$feat[idxsorted[i], j] != dat$feat[idxsorted[i+1], j])
-      {
-        ############# GINI INDEX #############
+      
+      # If neither value is NA...
+      if (!is.na(dat$feat[idxsorted[i], j]) && !is.na(dat$feat[idxsorted[i+1], j])) {
         
-        # Split the values into two daughter nodes and calculate both nodes'
-        # Gini Index
-        
-        # Daughter Node 1
-        d1numcases <- sum(dat$case[idxsorted[1:i]] == 1)
-        d1numcontrols <- sum(dat$case[idxsorted[1:i]] == 0)
-        d1length <- length(idxsorted[1:i])
-        d1caseprob <- d1numcases/d1length
-        d1controlprob <- d1numcontrols/d1length
-        
-        d1gini <- 1 - (d1caseprob^2 + d1controlprob^2)
-        
-        # Daughter Node 2
-        idxend <- idxsorted[(i+1):length(idxsorted)]
-        
-        d2numcases <- sum(dat$case[idxend] == 1)
-        d2numcontrols <- sum(dat$case[idxend] == 0)
-        d2length <- length(idxend)
-        d2caseprob <- d2numcases/d2length
-        d2controlprob <- d2numcontrols/d2length
-        
-        d2gini <- 1 - (d2caseprob^2 + d2controlprob^2)
-        
-        # Calculate the weighted sum for this split and store it in colresults
-        finalgini <- (d1gini * (d1length/numsamples)) + (d2gini * (d2length/numsamples))
-        
-        gcolresults[i] <- finalgini
-        
-        
-        ############# INFORMATION GAIN #############
-        
-        # Calculate the Information Gain values of both daughter nodes
-        
-        # Daughter Node 1
-        if (d1caseprob == 0 | d1controlprob == 0) {
+        # ...And if feature value [idxsorted[i],j] is not equal to feature value
+        # [idxsorted[i+1],j], calculate the Gini Index and Information Gain
+        if (dat$feat[idxsorted[i], j] != dat$feat[idxsorted[i+1], j])
+        {
+          ############# GINI INDEX #############
           
-          d1infog <- 0
-
-        } else {
-          d1infog <- -((d1caseprob*log(d1caseprob)) +
-                         (d1controlprob*log(d1controlprob)))
-        }
-        
-        # Daughter Node 2
-        if (d2caseprob == 0 | d2controlprob == 0) {
+          # Split the values into two daughter nodes and calculate both nodes'
+          # Gini Index
           
-          d2infog <- 0
-
-        } else {
-          d2infog <- -((d2caseprob*log(d2caseprob)) +
-                         (d2controlprob*log(d2controlprob)))
+          # Daughter Node 1
+          d1numcases <- sum(dat$case[idxsorted[1:i]] == 1)
+          d1numcontrols <- sum(dat$case[idxsorted[1:i]] == 0)
+          d1length <- length(idxsorted[1:i])
+          d1caseprob <- d1numcases/d1length
+          d1controlprob <- d1numcontrols/d1length
+          
+          d1gini <- 1 - (d1caseprob^2 + d1controlprob^2)
+          
+          # Daughter Node 2
+          idxend <- idxsorted[(i+1):length(idxsorted)]
+          
+          d2numcases <- sum(dat$case[idxend] == 1)
+          d2numcontrols <- sum(dat$case[idxend] == 0)
+          d2length <- length(idxend)
+          d2caseprob <- d2numcases/d2length
+          d2controlprob <- d2numcontrols/d2length
+          
+          d2gini <- 1 - (d2caseprob^2 + d2controlprob^2)
+          
+          # Calculate the weighted sum for this split and store it in colresults
+          finalgini <- (d1gini * (d1length/numsamples)) + (d2gini * (d2length/numsamples))
+          
+          gcolresults[i] <- finalgini
+          
+          
+          ############# INFORMATION GAIN #############
+          
+          # Calculate the Information Gain values of both daughter nodes
+          
+          # Daughter Node 1
+          if (d1caseprob == 0 | d1controlprob == 0) {
+            
+            d1infog <- 0
+            
+          } else {
+            d1infog <- -((d1caseprob*log(d1caseprob)) +
+                           (d1controlprob*log(d1controlprob)))
+          }
+          
+          # Daughter Node 2
+          if (d2caseprob == 0 | d2controlprob == 0) {
+            
+            d2infog <- 0
+            
+          } else {
+            d2infog <- -((d2caseprob*log(d2caseprob)) +
+                           (d2controlprob*log(d2controlprob)))
+          }
+          
+          finalinfog <- sum(d1infog * (d1length/numsamples), d2infog * (d2length/numsamples))
+          icolresults[i] <- finalinfog
         }
-       
-        finalinfog <- sum(d1infog * (d1length/numsamples), d2infog * (d2length/numsamples))
-        icolresults[i] <- finalinfog
       }
     }
-        
-        # Calculate the weighted sum Information Gain for this split and store it
-        # in icolresults
-        finalinfog <- sum(d1infog * (d1length/numsamples), d2infog * (d2length/numsamples))
-        
-        icolresults[i] <- finalinfog
-
-        # For each feature, find the smallest weighted Gini Index and store it
-        # in finalresults
-        gfinalresults[j] <- min(gcolresults)
-        
-        # For each feature, find the smallest weighted Information Gain value and
-        # store it in finalresults
-        ifinalresults[j] <- min(icolresults)
+    
+    # Calculate the weighted sum Information Gain for this split and store it
+    # in icolresults
+    finalinfog <- sum(d1infog * (d1length/numsamples), d2infog * (d2length/numsamples))
+    
+    icolresults[i] <- finalinfog
+    
+    # For each feature, find the smallest weighted Gini Index and store it
+    # in finalresults
+    gfinalresults[j] <- min(gcolresults)
+    
+    # For each feature, find the smallest weighted Information Gain value and
+    # store it in finalresults
+    ifinalresults[j] <- min(icolresults)
   }
   
   # Combine gfinalresults and ifinalresults into a single list to return

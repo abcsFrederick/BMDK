@@ -24,11 +24,13 @@ pickFeatures_bmdk <- function(dat)
   ttop <- colnames(dat$feat)[order(dat$testresults$tresults)[1:10]]
   gtop <- colnames(dat$feat)[order(dat$testresults$gresults)[1:10]]
   itop <- colnames(dat$feat)[order(dat$testresults$iresults)[1:10]]
+  kstop <- colnames(dat$feat)[order(dat$testresults$ksresults)[1:10]]
   
   dat$topfeatures <- c(wtop,
                        ttop,
                        gtop,
-                       itop) %>%
+                       itop,
+                       kstop) %>%
                       unique()
   
   # Run the list of top features through a Pearson Correlation
