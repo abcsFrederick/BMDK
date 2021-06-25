@@ -29,16 +29,19 @@ filter_bmdk <- function(dat)
         # Two Sample t-test
         tresults[i] <- t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[3]]
         
-        tryCatch ( 
-          expr = {
+        tryCatch ( ##
+          expr = { ##
             # Kolmogorov-Smirnov test (K-S test)
             ksresults[i] <- ks.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[2]]
-          }, 
-          warning = function(w) {
-            print(ksresults[i])
+          }, ##
+          warning = function(w) { ##
             message("Tie warning.")
-          }
-        )
+            #cat('Feature 1 Values:', dat$feat[dat$case == 1,i], '\n Feature 2 Values:',
+                #dat$feat[dat$case == 0,i], '\n')
+            print(ks.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[1]])
+            #print(ksresults[i])
+          } ##
+        ) ##
       } 
   
   # Decision Tree Gini Index and Information Gain
