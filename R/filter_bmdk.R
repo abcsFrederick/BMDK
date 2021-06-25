@@ -21,8 +21,6 @@ filter_bmdk <- function(dat)
   ksresults <- numeric(ncol(dat$feat))
   
   # Run the features data through a series of tests and identify each datum's significance
-  tryCatch ( 
-    expr = {
       for (i in 1:ncol(dat$feat))
       {
         # Wilcoxon Rank Sum test
@@ -31,17 +29,17 @@ filter_bmdk <- function(dat)
         # Two Sample t-test
         tresults[i] <- t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[3]]
         
-        # Kolmogorov-Smirnov test (K-S test)
-        ksresults[i] <- ks.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[2]]
-      }
-      message("ks.test() threw no warnings.")
-    }, 
-    warning = function(w) {
-      print(ksresults[i])
-      message("Tie warning.")
-    }
-  )
-  
+        tryCatch ( 
+          expr = {
+            # Kolmogorov-Smirnov test (K-S test)
+            ksresults[i] <- ks.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[2]]
+          }, 
+          warning = function(w) {
+            print(ksresults[i])
+            message("Tie warning.")
+          }
+        )
+      } 
   
   # Decision Tree Gini Index and Information Gain
   giniinforesults <- dtgini(dat)
