@@ -24,7 +24,7 @@ test_that("knn returns the correct values", {
     
     tst1 <- knn(nrow= nrowT1, ncol= ncolT1, f= c(t(mat1)))
     
-    expect_equal(tst1[[1]], c(4, 4, 70, 14))
+    expect_equal(tst1[[1]], c(1, 1, 17.5, 3.5))
     expect_equal(tst1[[2]], c(1, 0, 3, 0))
 })
 
@@ -39,7 +39,7 @@ test_that("knn handles NAs correctly", {
     
     tst2 <- knn(nrow= nrowT2, ncol= ncolT2, f= c(t(mat2)))
     
-    expect_equal(tst2[[1]], c(7, 9, 7))
-    expect_equal(tst2[[2]], c(2, 0, 0))
+    expect_equal(tst2[[1]], c(3, 3, 3.5))
+    expect_equal(tst2[[2]], c(1, 0, 0))
 })
 

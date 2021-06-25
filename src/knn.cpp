@@ -24,6 +24,7 @@ List knn(int nrow, int ncol, NumericVector f) {
   // Initializations
   NumericVector neighborsDist(numSamp);
   double cumSum;
+  double nonNAPairs;
   double absDiff;
   double minVal;
   int minIdx;
@@ -44,6 +45,9 @@ List knn(int nrow, int ncol, NumericVector f) {
         // Initialize the cumulative sum value
         cumSum= 0;
         
+        // Initialize the count of non-NA pairs
+        nonNAPairs= 0;
+        
         // Iterate through each feature value of the samples
         for (int k = 0; k < numFeat; k++) {
           
@@ -51,12 +55,13 @@ List knn(int nrow, int ncol, NumericVector f) {
             absDiff= abs( f[i*numFeat + k] - f[j*numFeat + k] );
             // Add to the cumulative sum value
             cumSum= cumSum + absDiff;
+            nonNAPairs = nonNAPairs + 1;
           }
         }
         
         if (cumSum != 0) {
           // Set the jth element equal to the sum of the abs difference between two samples
-          neighborsDist[j] =  cumSum;
+          neighborsDist[j] =  cumSum / nonNAPairs;
         }
 
       }

@@ -13,6 +13,7 @@
 #' @importFrom stats t.test
 #' @importFrom stats wilcox.test
 #' @importFrom stats ks.test
+#' @importFrom stats chisq.test
 filter_bmdk <- function(dat)
 {
   # Initialize vectors to store the results of each test
@@ -21,28 +22,17 @@ filter_bmdk <- function(dat)
   ksresults <- numeric(ncol(dat$feat))
   
   # Run the features data through a series of tests and identify each datum's significance
-      for (i in 1:ncol(dat$feat))
-      {
-        # Wilcoxon Rank Sum test
-        wresults[i] <- wilcox.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i], exact = F)[[3]]
-        
-        # Two Sample t-test
-        tresults[i] <- t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[3]]
-        
-        tryCatch ( ##
-          expr = { ##
-            # Kolmogorov-Smirnov test (K-S test)
-            ksresults[i] <- ks.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[2]]
-          }, ##
-          warning = function(w) { ##
-            message("Tie warning.")
-            #cat('Feature 1 Values:', dat$feat[dat$case == 1,i], '\n Feature 2 Values:',
-                #dat$feat[dat$case == 0,i], '\n')
-            print(ks.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[1]])
-            #print(ksresults[i])
-          } ##
-        ) ##
-      } 
+  for (i in 1:ncol(dat$feat))
+  {
+    # Wilcoxon Rank Sum test
+    wresults[i] <- wilcox.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i], exact = F)[[3]]
+    
+    # Two Sample t-test
+    tresults[i] <- t.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[3]]
+    
+    # Kolmogorov-Smirnov test (K-S test)
+    ksresults[i] <- suppressWarnings(ks.test(dat$feat[dat$case == 1,i], dat$feat[dat$case == 0,i])[[2]])
+  } 
   
   # Decision Tree Gini Index and Information Gain
   giniinforesults <- dtgini(dat)
