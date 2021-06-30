@@ -13,7 +13,6 @@
 #' @importFrom stats t.test
 #' @importFrom stats wilcox.test
 #' @importFrom stats ks.test
-#' @importFrom stats chisq.test
 filter_bmdk <- function(dat)
 {
   # Initialize vectors to store the results of each test
@@ -39,17 +38,24 @@ filter_bmdk <- function(dat)
   
   gresults <- giniinforesults$gresults
   iresults <- giniinforesults$iresults
+  fresults <- giniinforesults$fresults
+  
+  # Extreme Algorithm
+  eresults <- extreme(dat)
   
   # Store all of the test results in testresults, a list of numeric vectors
   testresults <- list(wresults,
                       tresults,
                       gresults,
                       iresults,
-                      ksresults)
+                      ksresults,
+                      fresults,
+                      eresults)
   
   # Name each element in testresults
   ### NOTE: Can we do this so it is not hardcoded?? ###
-  names(testresults) <- c('wresults', 'tresults', 'gresults', 'iresults', 'ksresults')
+  names(testresults) <- c('wresults', 'tresults', 'gresults', 'iresults',
+                          'ksresults', 'fresults', 'eresults')
   
   # Add testresults to dat
   dat$testresults <- testresults

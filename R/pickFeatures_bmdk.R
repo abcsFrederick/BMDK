@@ -22,15 +22,27 @@ pickFeatures_bmdk <- function(dat)
   # Identify a unique list of the top features from both tests
   wtop <- colnames(dat$feat)[order(dat$testresults$wresults)[1:10]]
   ttop <- colnames(dat$feat)[order(dat$testresults$tresults)[1:10]]
-  gtop <- colnames(dat$feat)[order(dat$testresults$gresults)[1:10]]
-  itop <- colnames(dat$feat)[order(dat$testresults$iresults)[1:10]]
+  gtop <- colnames(dat$feat)[order(dat$testresults$gresults, decreasing = TRUE)[1:10]]
+  itop <- colnames(dat$feat)[order(dat$testresults$iresults, decreasing = TRUE)[1:10]]
   kstop <- colnames(dat$feat)[order(dat$testresults$ksresults)[1:10]]
+  ftop <- colnames(dat$feat)[order(dat$testresults$fresults)[1:10]]
+  
+  eSorted <- sort(dat$testresults$eresults, decreasing = TRUE)
+  endIdx <- 10
+  
+  while (eSorted[endIdx] == eSorted[endIdx + 1]) {
+    endIdx <- endIdx + 1
+  }
+  
+  etop <- colnames(dat$feat)[order(dat$testresults$eresults)[1:endIdx]]
   
   dat$topfeatures <- c(wtop,
                        ttop,
                        gtop,
                        itop,
-                       kstop) %>%
+                       kstop,
+                       ftop,
+                       etop) %>%
                       unique()
   
   # Run the list of top features through a Pearson Correlation
