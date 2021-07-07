@@ -1,9 +1,13 @@
-#'
+#' Runs the extreme algorithm on the features data.
+#' 
+#' The algorithm orders all intensities from lowest to highest and starting
+#' from both extremes finds the maximum number of samples from a single State
+#' before a sample from another State is observed.
 #' 
 #' @param dat a list containing 3 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
 #'        from each column in feat
-#' @return eresults, a list of extreme algorithm maximum values.
+#' @return eresults, a vector of extreme algorithm maximum values.
 #' @export
 extreme <- function(dat)
 {
