@@ -16,7 +16,7 @@
 #' @return finalresults a list of Information Gain sums, and Fisher Test p-values.
 #' @importFrom stats fisher.test
 #' @export
-dtinfo <- function(dat)
+dtinfof <- function(dat)
 {
   # Initialize vectors to store each feature's minimum test statistic for each
   # test

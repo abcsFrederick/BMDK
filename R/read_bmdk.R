@@ -41,10 +41,16 @@ read_bmdk <- function(f)
     # Store the max value of each column (feature) in dat
     maxfeat <- suppressWarnings(apply(dat, 2, max, na.rm = TRUE))
     
+    # Store the min value of each column (feature) in dat
+    minfeat <- suppressWarnings(apply(dat, 2, min, na.rm = TRUE))
+    
     # Normalize dat
-    dat <- suppressWarnings(apply(dat, 2, function(.x){.x / max(.x, na.rm = TRUE)}))
+    dat <- suppressWarnings(apply(dat, 2,
+                                  function(.x){(.x - min(.x, na.rm = TRUE)) /
+                                          (max(.x, na.rm = TRUE) - min(.x, na.rm = TRUE))}))
     
     return(list(case = case,        # Integer vector
                 feat = dat,         # Numeric matrix
-                maxfeat = maxfeat)) # Numeric vector
+                maxfeat = maxfeat,  # Numeric vector
+                minfeat = minfeat)) # Numeric vector
 }

@@ -26,6 +26,13 @@ pickFeatures_bmdk <- function(dat)
   itop <- colnames(dat$feat)[order(dat$testresults$iresults, decreasing = TRUE)[1:10]]
   kstop <- colnames(dat$feat)[order(dat$testresults$ksresults)[1:10]]
   ftop <- colnames(dat$feat)[order(dat$testresults$fresults)[1:10]]
+  ltop <- colnames(dat$feat)[order(dat$testresults$lresults)[1:10]]
+  pctop <- colnames(dat$feat)[order(dat$testresults$pcresults)[1:10]]
+  kctop <- colnames(dat$feat)[order(dat$testresults$kcresults)[1:10]]
+  sctop <- colnames(dat$feat)[order(dat$testresults$scresults)[1:10]]
+  vtop <- colnames(dat$feat)[order(dat$testresults$vresults)[1:10]]
+  ctop <- colnames(dat$feat)[order(dat$testresults$cresults, decreasing = TRUE)[1:10]]
+  ptop <- colnames(dat$feat)[order(dat$testresults$presults, decreasing = TRUE)[1:10]]
   
   eSorted <- sort(dat$testresults$eresults, decreasing = TRUE)
   endIdx <- 10
@@ -36,13 +43,13 @@ pickFeatures_bmdk <- function(dat)
   
   etop <- colnames(dat$feat)[order(dat$testresults$eresults)[1:endIdx]]
   
-  dat$topfeatures <- c(wtop,
-                       ttop,
-                       gtop,
-                       itop,
-                       kstop,
-                       ftop,
-                       etop) %>%
+  dat$topfeatures <- c(wtop, ttop,
+                       gtop, itop,
+                       kstop, ftop,
+                       etop, ltop,
+                       pctop, kctop,
+                       sctop, vtop,
+                       ctop, ptop) %>%
                       unique()
   
   # Run the list of top features through a Pearson Correlation

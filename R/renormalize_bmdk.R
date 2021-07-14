@@ -12,13 +12,18 @@
 renormalize_bmdk <- function(dat)
 {
   # After removing outliers, unnormalize dat
-  dat$feat <- t(t(dat$feat) * dat$maxfeat)
+  dat$feat <- t(t(dat$feat) * (dat$maxfeat - dat$minfeat) + dat$minfeat)
   
   # Reevaluate the max feature of each column
   dat$maxfeat <- apply(dat$feat, 2, max)
   
+  # Reevaluate the min feature of each column
+  dat$minfeat <- apply(dat$feat, 2, min)
+  
   # Renormalize dat
-  dat$feat <- apply(dat$feat, 2, function(.x){.x / max(.x, na.rm = TRUE)})
+  dat$feat <- apply(dat, 2,
+                    function(.x){(.x - min(.x, na.rm = TRUE)) /
+                        (max(.x, na.rm = TRUE) - min(.x, na.rm = TRUE))})
   
   return(dat)
 }

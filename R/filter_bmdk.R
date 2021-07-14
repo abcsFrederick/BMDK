@@ -20,10 +20,14 @@
 filter_bmdk <- function(dat)
 {
   # Initialize vectors to store the results of each test
-  wresults <- numeric(ncol(dat$feat))
-  tresults <- numeric(ncol(dat$feat))
-  ksresults <- numeric(ncol(dat$feat))
-  lresults <- numeric(ncol(dat$feat))
+  wresults <- numeric(ncol(dat$feat)) # Wilcoxon
+  tresults <- numeric(ncol(dat$feat)) # T-test
+  ksresults <- numeric(ncol(dat$feat)) # K-S Test
+  lresults <- numeric(ncol(dat$feat)) # Logistic Regression
+  vresults <- numeric(ncol(dat$feat)) # Variance
+  pcresults <- numeric(ncol(dat$feat)) # Pearson Cor
+  kcresults <- numeric(ncol(dat$feat)) # Kendall Cor
+  scresults <- numeric(ncol(dat$feat)) # Spearman Cor
   
   # Run the features data through a series of tests and identify each datum's significance
   for (i in 1:ncol(dat$feat))
@@ -40,10 +44,26 @@ filter_bmdk <- function(dat)
     # Logistic Regression (General Linear Model)
     mylogit <- glm(dat$case ~ dat$feat[ , i], family = 'binomial')
     lresults[i] <- coef(summary(mylogit))['dat$feat[, i]', 'Pr(>|z|)']
+    
+    # Variance Test
+    vcon <- var(dat$feat[dat$case == 0, i], na.rm = TRUE)
+    vcase <- var(dat$feat[dat$case == 1, i], na.rm = TRUE)
+    vfeat <- var(dat$feat[, i], na.rm = TRUE)
+    vconresult <- vcon**2 / length(dat$feat[dat$case == 0, i])
+    vcaseresult <- vcase**2 / length(dat$feat[dat$case == 1, i])
+    vresults[i] <- (length(dat$feat[, i]) / vfeat**2)*(vconresult + vcaseresult)
+    
+    # Correlation Tests (Pearson, Kendall, Spearman)
+    pcresults[i] <- cor.test(dat$case, dat$feat[, i], method = 'pearson',
+                             exact = FALSE, na.action = 'na.omit')$p.value
+    kcresults[i] <- cor.test(dat$case, dat$feat[, i], method = 'kendall',
+                             exact = FALSE, na.action = 'na.omit')$p.value
+    scresults[i] <- cor.test(dat$case, dat$feat[, i], method = 'spearman',
+                             exact = FALSE, na.action = 'na.omit')$p.value
   } 
   
   # Decision Tree Information Gain and Fisher Test
-  inforesults <- dtinfo(dat)
+  inforesults <- dtinfof(dat)
   iresults <- inforesults$iresults
   fresults <- inforesults$fresults
   
@@ -57,22 +77,20 @@ filter_bmdk <- function(dat)
   presults <- giniresults$presults
   
   # Store all of the test results in testresults, a list of numeric vectors
-  testresults <- list(wresults,
-                      tresults,
-                      gresults,
-                      iresults,
-                      ksresults,
-                      fresults,
-                      eresults,
-                      cresults,
-                      presults,
-                      lresults)
+  testresults <- list(wresults, tresults,
+                      gresults, iresults,
+                      ksresults, fresults,
+                      eresults, cresults,
+                      presults, lresults,
+                      vresults, pcresults,
+                      kcresults, scresults)
   
   # Name each element in testresults
   ### NOTE: Can we do this so it is not hardcoded?? ###
   names(testresults) <- c('wresults', 'tresults', 'gresults', 'iresults',
                           'ksresults', 'fresults', 'eresults', 'cresults',
-                          'presults', 'lresults')
+                          'presults', 'lresults', 'vresults', 'pcresults',
+                          'kcresults', 'scresults')
   
   # Add testresults to dat
   dat$testresults <- testresults
