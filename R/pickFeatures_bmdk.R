@@ -41,7 +41,7 @@ pickFeatures_bmdk <- function(dat)
     endIdx <- endIdx + 1
   }
   
-  etop <- colnames(dat$feat)[order(dat$testresults$eresults)[1:endIdx]]
+  etop <- colnames(dat$feat)[order(dat$testresults$eresults, decreasing = TRUE)[1:endIdx]]
   
   dat$topfeatures <- c(wtop, ttop,
                        gtop, itop,

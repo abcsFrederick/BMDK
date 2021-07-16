@@ -13,11 +13,11 @@ detectOutliers_bmdk <- function(dat)
 {
   nnInfo <- knn(nrow= ncol(dat$feat), ncol= nrow(dat$feat), f= c(t(dat$feat)))
   nnDist <- nnInfo[[1]]
-  nnIdx <- nnInfo[[2]]
+  nnIdx <- nnInfo[[2]] + 1 # R indexing starts at 1, not 0
   
   upperBound <- mean(nnDist) + 3*sd(nnDist)
   
-  outlierlocs <- nnIdx[nnDist > upperBound]
+  outlierlocs <- which(nnDist > upperBound)
   
   if (length(outlierlocs) > 0)
   {

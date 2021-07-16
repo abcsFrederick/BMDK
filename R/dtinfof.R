@@ -29,7 +29,7 @@ dtinfof <- function(dat)
   # For each feature (column) in dat$feat...
   for (j in 1:ncol(dat$feat)) {
     
-    # Initialize vectors to store the values of one column (InfoGain, Fisher
+    # Initialize vectors to store the values of one column (InfoGain, Fisher)
     icolresults <- numeric(nrow(dat$feat)-1)
     fcolresults <- numeric(nrow(dat$feat)-1)
     

@@ -21,7 +21,7 @@ renormalize_bmdk <- function(dat)
   dat$minfeat <- apply(dat$feat, 2, min)
   
   # Renormalize dat
-  dat$feat <- apply(dat, 2,
+  dat$feat <- apply(dat$feat, 2,
                     function(.x){(.x - min(.x, na.rm = TRUE)) /
                         (max(.x, na.rm = TRUE) - min(.x, na.rm = TRUE))})
   
