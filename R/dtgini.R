@@ -24,30 +24,23 @@ dtgini <- function(dat)
   for (j in 1:ncol(dat$feat)) {
 
     # Decision Tree class
-    cTree <- rpart(dat$case ~ featDf[ , j], data = featDf,
-                   method = 'class',
-                   control = list(maxdepth = 1))
-    if (is.null(cTree$split[4])) {
+    cTree <- rpart(dat$case ~ featDf[ , j], data = featDf, method = 'class')
+    if (is.null(cTree$splits[1,3])) {
       cresults[j] <- 0
-    } else { cresults[j] <- cTree$split[4] }
-    
+    } else {cresults[j] <- cTree$splits[1,3]}
     
     # Decision Tree Gini Index
-    gTree <- rpart(dat$case ~ featDf[ , j], data = featDf,
-                   method = 'anova',
-                   control = list(maxdepth = 1))
-    if (is.null(gTree$split[4])) {
+    gTree <- rpart(dat$case ~ featDf[ , j], data = featDf, method = 'anova')
+    if (is.null(gTree$splits[1,3])) {
       gresults[j] <- 0
-    } else { gresults[j] <- gTree$split[4] }
+    } else {gresults[j] <- gTree$splits[1,3]}
     
     
     # Decision Tree poisson
-    pTree <- rpart(dat$case ~ featDf[ , j], data = featDf,
-                   method = 'poisson',
-                   control = list(maxdepth = 1))
-    if (is.null(pTree$split[4])) {
+    pTree <- rpart(dat$case ~ featDf[ , j], data = featDf, method = 'poisson')
+    if (is.null(pTree$splits[1,3])) {
       presults[j] <- 0
-    } else { presults[j] <- pTree$split[4] }
+    } else {presults[j] <- pTree$splits[1,3]}
     
   }
   

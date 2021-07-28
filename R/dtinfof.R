@@ -68,20 +68,19 @@ dtinfof <- function(dat)
           if (d1caseprob == 0 | d1controlprob == 0) {
             d1infog <- 0
           } else {
-            d1infog <- -((d1caseprob*log2(d1caseprob)) +
-                           (d1controlprob*log2(d1controlprob)))
+            d1infog <- -((d1caseprob*log(d1caseprob)) +
+                           (d1controlprob*log(d1controlprob)))
           }
           
           # Daughter 2
           if (d2caseprob == 0 | d2controlprob == 0) {
             d2infog <- 0
           } else {
-            d2infog <- -((d2caseprob*log2(d2caseprob)) +
-                           (d2controlprob*log2(d2controlprob)))
+            d2infog <- -((d2caseprob*log(d2caseprob)) +
+                           (d2controlprob*log(d2controlprob)))
           }
           
-          icolresults[i] <- sum(d1infog * (d1length/numsamples),
-                                d2infog * (d2length/numsamples))
+          icolresults[i] <- d1infog + d2infog
           
           
           ############# FISHER TEST #############

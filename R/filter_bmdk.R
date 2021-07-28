@@ -49,9 +49,9 @@ filter_bmdk <- function(dat)
     vcon <- var(dat$feat[dat$case == 0, i], na.rm = TRUE)
     vcase <- var(dat$feat[dat$case == 1, i], na.rm = TRUE)
     vfeat <- var(dat$feat[, i], na.rm = TRUE)
-    vconresult <- vcon**2 / length(dat$feat[dat$case == 0, i])
-    vcaseresult <- vcase**2 / length(dat$feat[dat$case == 1, i])
-    vterm1 <- length(dat$feat[, i]) / (vfeat**2)
+    vconresult <- vcon / length(dat$feat[dat$case == 0, i])
+    vcaseresult <- vcase / length(dat$feat[dat$case == 1, i])
+    vterm1 <- length(dat$feat[, i]) / vfeat
     vresults[i] <- vterm1*(vconresult + vcaseresult)
     
     # Correlation Tests (Pearson, Kendall, Spearman)
