@@ -3,8 +3,8 @@
 #' Read in a test or training dataset with the proper format for BMDK.
 #'
 #' @param f path to input file
-#' @return A list with case/control status, a matrix, and max feature value
-#'         formatted and tidied for BMDK
+#' @return A list with case/control status, a matrix, max feature value, and
+#'         min feature value formatted and tidied for BMDK
 #' @examples
 #' test_data <- read_bmdk(system.file('extdata', 'BMDK_test.txt', package = 'BMDK'))
 #' @export

@@ -4,14 +4,14 @@
 #' values to NA. Features and samples that contain a threshold ratio of NA
 #' values are removed.
 #'
-#' @param dat a list containing 3 elements: case, a list of case/control
-#' statuses; feat, a matrix of normalized feature data; maxfeat, a list of max
-#' features from each column in feat
+#' @param dat a list containing 4 elements: case, a list of case/control
+#'        statuses; feat, a matrix of normalized feature data; maxfeat, a list
+#'        of max features from each column in feat; minfeat, a list of min
+#'        features for each feature
 #' @param naThreshold Proportion of NAs to allow before dropping a sample or feature due to missingness.
 #' @param sdMultiplier Number of standard deviations defining the threshold for outlier detection. Any values above sdMultiplier standard deviations away from the mean will be removed as an outlier.
-#' @return List containing 3 elements (case, feat, maxfeat) with relevant NA
-#' values and necessary features/samples removed
-#' 
+#' @return List containing 4 elements (case, feat, maxfeat, minfeat) with 
+#'         relevant NA values and necessary features/samples removed
 #' @export 
 #' @importFrom stats sd
 clean_bmdk <- function(dat, naThreshold = 0.05, sdMultiplier = 4)

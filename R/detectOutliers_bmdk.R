@@ -3,10 +3,11 @@
 #' Using the k Nearest Neighbours Distance method, detect outliers in the data
 #' and remove them. After removing the outliers, renormalize the data.
 #'
-#' @param dat a list containing 3 elements: case, a list of case/control statuses;
+#' @param dat a list containing 4 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
-#'        from each column in feat
-#' @return List containing 3 elements (case, feat, maxfeat) with the outliers removed
+#'        from each column in feat; minfeat, a list of min features for each feature
+#' @return List containing 4 elements (case, feat, maxfeat, minfeat) with the
+#'         outliers removed
 #' @export 
 #' @importFrom stats sd
 detectOutliers_bmdk <- function(dat)

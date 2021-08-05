@@ -3,11 +3,11 @@
 #' After outliers are removed, renormalize the features data and store the
 #' new max value of each feature.
 #'
-#' @param dat a list containing 3 elements: case, a list of case/control statuses;
+#' @param dat a list containing 4 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
-#'        from each column in feat
-#' @return List containing 3 elements (case, feat, maxfeat) renormalized after outliers
-#'         are removed
+#'        from each column in feat; minfeat, a list of min features for each feature
+#' @return List containing 4 elements (case, feat, maxfeat, minfeat)
+#'        renormalized after outliers are removed
 
 renormalize_bmdk <- function(dat)
 {

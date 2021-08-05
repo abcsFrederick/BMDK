@@ -7,12 +7,14 @@
 #' Extreme algorithm, Decision Tree class, Decision Tree poisson, and Logistic
 #' Regression.
 #'
-#' @param dat a list containing 3 elements: case, a list of case/control statuses;
+#' @param dat a list containing 4 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
-#'        from each column in feat
-#' @return dat a list containing 4 elements: case, a list of case/control statuses;
+#'        from each column in feat; minfeat, a list of min features for each feature
+#' @return dat a list containing 5 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
-#'        from each column in feat; testresults, a list of statistical test results
+#'        from each column in feat; testresults, a list of statistical test results;
+#'        minfeat, a list of min features for each feature; testresults, a list of
+#'        statistical test results
 #' @export
 #' @importFrom stats t.test
 #' @importFrom stats wilcox.test

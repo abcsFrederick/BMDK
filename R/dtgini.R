@@ -7,9 +7,9 @@
 #' identify between cases and controls for each feature. To do this, this function
 #' identifies the smallest weighted value for each test for each feature.
 #' 
-#' @param dat a list containing 3 elements: case, a list of case/control statuses;
+#' @param dat a list containing 4 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
-#'        from each column in feat
+#'        from each column in feat; minfeat, a list of min features for each feature
 #' @return a list containing 3 different test result vectors
 #' @export
 #' 

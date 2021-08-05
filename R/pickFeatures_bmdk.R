@@ -5,13 +5,15 @@
 #' identifies correlated pairs. Removes the feature with the smaller max value
 #' of each pair from the top features list. 
 #'
-#' @param dat a list containing 4 elements: case, a list of case/control statuses;
+#' @param dat a list containing 5 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
-#'        from each column in feat; testresults, a list of statistical test results
-#' @return dat a list containing 5 elements: case, a list of case/control statuses;
+#'        from each column in feat; ; minfeat, a list of min features for each
+#'        feature; testresults, a list of statistical test results
+#' @return dat a list containing 6 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
-#'        from each column in feat; testresults, a list of statistical test results;
-#'        topfeatures, a list of top features names
+#'        from each column in feat; minfeat, a list of min features for each
+#'        feature; testresults, a list of statistical test results; topfeatures,
+#'        a list of top features names
 #' @export
 #' @importFrom stats cor
 #' @importFrom magrittr %>%
