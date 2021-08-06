@@ -19,8 +19,8 @@ dat <- read_bmdk(system.file('extdata', 'BMDK_train.txt', package = 'BMDK')) %>%
     detectOutliers_bmdk() %>%
     filter_bmdk() %>%
     pickFeatures_bmdk() %>%
-    removeFeatures_bmdk() #%>%
-    # buildClassifer_bmdk() %>%
+    removeFeatures_bmdk() %>%
+    buildClassifer_bmdk() #%>%
     # validate_bmdk()
 
 ```

@@ -1,9 +1,7 @@
 #' Picks the top features to be used in the BMDK classifier
 #' 
 #' Takes the top features from each of the filtering methods and finds the
-#' union. Then runs those features through a Pearson Correlation test and
-#' identifies correlated pairs. Removes the feature with the smaller max value
-#' of each pair from the top features list. 
+#' union.
 #'
 #' @param dat a list containing 5 elements: case, a list of case/control statuses;
 #'        feat, a matrix of normalized feature data; maxfeat, a list of max features
